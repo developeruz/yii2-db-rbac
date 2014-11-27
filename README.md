@@ -1,4 +1,7 @@
-yii2-db-rbac
+Динамическая настройка прав доступа для Yii2
 ============
 
-Dynamic control of access rights in YII2
+###Установка:###
+```bash
+$ php composer.phar require developeruz/yii2-db-rbac "*"
+```

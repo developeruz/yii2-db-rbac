@@ -1,0 +1,25 @@
+{
+    "name": "developeruz/yii2-db-rbac",
+    "description": "Dynamic control of access rights in YII2",
+    "keywords": ["yii", "rbac"],
+    "type": "yii2-extension",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Elvira Sheina",
+            "email": "elleuz@gmail.com",
+            "homepage": "http://developer.uz"
+        }
+    ],
+    "require": {
+        "yiisoft/yii2": "*"
+    },
+    "support": {
+        "issues": "https://github.com/developeruz/yii2-db-rbac/issues"
+    },
+    "autoload": {
+        "psr-4": {
+            "developeruz\\db_rbac\\": ""
+        }
+    }
+}
