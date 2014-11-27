@@ -1,4 +1,12 @@
 <?php
+/**
+ * AccessController for Yii2
+ *
+ * @author Elle <elleuz@gmail.com>
+ * @version 0.1
+ * @package AccessController for Yii2
+ *
+ */
 namespace developeruz\db_rbac\controllers;
 
 use Yii;

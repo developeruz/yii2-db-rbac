@@ -1,5 +1,12 @@
 <?php
-
+/**
+ * Yii2DbRbac for Yii2
+ *
+ * @author Elle <elleuz@gmail.com>
+ * @version 0.1
+ * @package Yii2DbRbac for Yii2
+ *
+ */
 namespace developeruz\db_rbac;
 
 use Yii;

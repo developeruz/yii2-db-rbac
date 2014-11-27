@@ -1,4 +1,12 @@
 <?php
+/**
+ * AccessBehavior for Yii2
+ *
+ * @author Elle <elleuz@gmail.com>
+ * @version 0.1
+ * @package AccessBehavior for Yii2
+ *
+ */
 namespace developeruz\db_rbac\behaviors;
 
 use Yii;
@@ -32,7 +40,7 @@ class AccessBehavior extends AttributeBehavior {
         $request = Yii::$app->getRequest();
         $action = $event->sender->requestedAction;
 
-        if(!$this->chekByRule($action, $user, $request))
+        if(!$this->cheсkByRule($action, $user, $request))
         {
             //И по AuthManager
             if(!$this->checkPermission($route))
@@ -56,7 +64,7 @@ class AccessBehavior extends AttributeBehavior {
         }
     }
 
-    protected function chekByRule($action, $user, $request)
+    protected function cheсkByRule($action, $user, $request)
     {
         foreach ($this->_rules as $rule) {
             if ($rule->allows($action, $user, $request))
