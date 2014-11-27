@@ -1,6 +1,6 @@
 <?php
 
-namespace common\module;
+namespace developeruz\db_rbac;
 
 use Yii;
 
