@@ -20,7 +20,6 @@ use yii\validators\RegularExpressionValidator;
 
 class AccessController extends Controller
 {
-
     protected $error;
     protected $pattern4Role = '/^[a-zA-Z0-9-_]+$/';
     protected $pattern4Permission = '/^[a-zA-Z0-9_\/]+$/';
@@ -48,7 +47,7 @@ class AccessController extends Controller
             $role = Yii::$app->authManager->createRole(Yii::$app->request->post('name'));
             $role->description = Yii::$app->request->post('description');
             Yii::$app->authManager->add($role);
-            $this->setPermissions(Yii::$app->request->post('permissions'), $role);
+            $this->setPermissions(Yii::$app->request->post('permissions', []), $role);
             return $this->redirect(Url::toRoute(['update-role', 'name' => $role->name]));
         }
 
@@ -73,7 +72,7 @@ class AccessController extends Controller
                 $role = $this->setAttribute($role, Yii::$app->request->post());
                 Yii::$app->authManager->update($name, $role);
                 Yii::$app->authManager->removeChildren($role);
-                $this->setPermissions(Yii::$app->request->post('permissions'), $role);
+                $this->setPermissions(Yii::$app->request->post('permissions', []), $role);
                 return $this->redirect(Url::toRoute(['update-role', 'name' => $role->name]));
             }
 
@@ -117,7 +116,7 @@ class AccessController extends Controller
             && $this->isUnique(Yii::$app->request->post('name'), 'permission')
         ) {
             $permit = Yii::$app->authManager->createPermission(Yii::$app->request->post('name'));
-            $permit->description = Yii::$app->request->post('description');
+            $permit->description = Yii::$app->request->post('description', '');
             Yii::$app->authManager->add($permit);
             return $this->redirect(Url::toRoute(['update-permission', 'name' => $permit->name]));
         }

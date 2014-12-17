@@ -9,7 +9,7 @@
 $ php composer.phar require developeruz/yii2-db-rbac "*"
 ```
 
-Для корректной работы модуля необходимо настроить authManager в конфиге приложения (common/config/main.php для advanced или config/web.php для basic приложения)
+Для корректной работы модуля необходимо настроить authManager в конфиге приложения (common/config/main.php для advanced или config/web.php и config/console  для basic приложения)
 ```php
     'components' => [
        'authManager' => [
@@ -30,6 +30,15 @@ $ yii migrate --migrationPath=@yii/rbac/migrations/
   'modules' => [
         'permit' => [
             'class' => 'developeruz\db_rbac\Yii2DbRbac',
+        ],
+    ],
+```
+Если нужно передать layout это можно сделать так:
+```php
+  'modules' => [
+        'permit' => [
+            'class' => 'developeruz\db_rbac\Yii2DbRbac',
+            'layout' => '//admin'
         ],
     ],
 ```
