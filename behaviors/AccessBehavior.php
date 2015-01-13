@@ -21,7 +21,7 @@ class AccessBehavior extends AttributeBehavior {
 
     public $rules=[];
 
-    private $_rules;
+    private $_rules = [];
 
     public function events()
     {
