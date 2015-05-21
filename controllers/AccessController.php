@@ -22,7 +22,7 @@ class AccessController extends Controller
 {
     protected $error;
     protected $pattern4Role = '/^[a-zA-Z0-9-_]+$/';
-    protected $pattern4Permission = '/^[a-zA-Z0-9_\/]+$/';
+    protected $pattern4Permission = '/^[a-zA-Z0-9_\/-]+$/';
 
     public function actions()
     {
