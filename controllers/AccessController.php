@@ -171,7 +171,7 @@ class AccessController extends Controller
         else {
             $this->error[] = Yii::t('db_rbac','Значение "{field}" содержит не допустимые символы', ['field' => $field]);
             return false;
-        };
+        }
     }
 
     protected function isUnique($name, $type)

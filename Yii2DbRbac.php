@@ -14,6 +14,7 @@ use Yii;
 class Yii2DbRbac extends \yii\base\Module
 {
     public $controllerNamespace = 'developeruz\db_rbac\controllers';
+    public $userClass;
 
     public function init()
     {

@@ -1,7 +1,7 @@
 Динамическая настройка прав доступа для Yii2
 ============
 
-Модуль для создания ролей и прав доступа через веб-интерфейс.
+Модуль для создания ролей и прав доступа через веб-интерфейс, так же имеющий веб интерфейс для назначения ролей пользователям
 Поведение для приложения, проверяющее право доступа к action по внесенным в модуле правилам.
 
 ###Установка:###
@@ -43,38 +43,81 @@ $ yii migrate --migrationPath=@yii/rbac/migrations/
     ],
 ```
 
-Добавляем ссылки в меню
-/permit/access/role - управление ролями
-/permit/access/permission - управление правами доступа
+Если вы используете ЧПУ, то убедитесь что у вас прописаны правила роутинга для модулей
+```php
+'<module:\w+>/<controller:\w+>/<action:(\w|-)+>' => '<module>/<controller>/<action>',
+'<module:\w+>/<controller:\w+>/<action:(\w|-)+>/<id:\d+>' => '<module>/<controller>/<action>',
+```
+
+**Добавляем ссылки в меню**
+
+**/permit/access/role - управление ролями**
+
+**/permit/access/permission - управление правами доступа**
 
 ###Назначение ролей пользователям###
-Модуль управления пользователями не входит в функционал данного модуля.
-Ниже приведены подсказки по использованию DbManager для назначения ролей пользователям
+По многочисленным просьбам в модуль добавлен интерфейс для назначения ролей пользователям. 
 
-- Присвоить роль пользователю
+Для корректной работы модуля нужно указать в параметрах модуля класс `User`.
+```php
+'modules' => [
+        'permit' => [
+            'class' => 'app\modules\db_rbac\Yii2DbRbac',
+            'params' => [
+                'userClass' => 'app\models\User'
+            ]
+        ],
+    ],
+```
+
+Класс User должен реализовывать интерфейс `developeruz\db_rbac\interfaces\UserRbacInterface`. 
+В большинстве случаев придется дописать в нем 1 функцию `getUserName()` которая будет возвращать отображаемое имя пользователя.
+```php
+use developeruz\db_rbac\interfaces\UserRbacInterface;
+
+class User extends ActiveRecord implements IdentityInterface, UserRbacInterface
+{
+...
+    public function getUserName()
+    {
+       return $this->username;
+    }
+}
+```
+
+**Управление ролью пользователя происходит на странице `/permit/user/view/1` для пользователя с id=1.**
+Удобнее всего дописать кнопку на эту страницу в Grid со списком пользователей.
+```php
+echo GridView::widget([
+    'dataProvider' => $dataProvider,
+    'columns' => [
+        ['class' => 'yii\grid\SerialColumn'],
+
+        'id',
+        'username',
+        'email:email',
+
+        ['class' => 'yii\grid\ActionColumn',
+         'template' => '{view}&nbsp;&nbsp;{update}&nbsp;&nbsp;{permit}&nbsp;&nbsp;{delete}',
+         'buttons' =>
+             [
+                 'permit' => function ($url, $model) {
+                     return Html::a('<span class="glyphicon glyphicon-wrench"></span>', Url::to(['/permit/user/view', 'id' => $model->id]), [
+                         'title' => Yii::t('yii', 'Change user role')
+                     ]); },
+             ]
+        ],
+    ],
+]);
+```
+
+Присвоить роль пользователю можно и в коде, например при создании нового пользователя. 
 ```php
 $userRole = Yii::$app->authManager->getRole('name_of_role');
 Yii::$app->authManager->assign($userRole, $user->getId());
 ```
-Присваивать роль можно при создании пользователя, при редактировании пользователя из админки или при авторизации.
-Допустимо множественое присвоение ролей (у 1 пользователя может быть N ролей)
 
-- Получить массив всех ролей
-```php
-ArrayHelper::map(Yii::$app->authManager->getRoles(), 'name', 'description');
-```
-
-- Получить массив присвоенных юзеру ролей
-```php
-array_keys(Yii::$app->authManager->getRolesByUser($user->getId()));
-```
-
-- Удалить все ранее привязанные роли пользователя
-```php
-Yii::$app->authManager->revokeAll($user->getId())
-```
-
-- Проверить, имеет ли пользователь право на действие
+Проверить, имеет ли пользователь право на действие можно через метод `can()` компонента User
 ```php
 Yii::$app->user->can($permissionName);
 ```
