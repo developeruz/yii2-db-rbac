@@ -12,6 +12,7 @@ namespace developeruz\db_rbac\behaviors;
 use Yii;
 use yii\behaviors\AttributeBehavior;
 use yii\di\Instance;
+use yii\base\Module;
 use yii\web\Application;
 use yii\web\User;
 use yii\filters\AccessControl;
@@ -26,7 +27,7 @@ class AccessBehavior extends AttributeBehavior {
     public function events()
     {
         return [
-            Application::EVENT_AFTER_REQUEST => 'interception',
+            Module::EVENT_BEFORE_ACTION => 'interception',
         ];
     }
 
