@@ -76,29 +76,20 @@ class AccessBehavior extends AttributeBehavior {
 
     protected function checkPermission($route)
     {
-        //max: module/controller/action
-        $routeVariant = [];
+        //$route[0] - is the route, $route[1] - is the associated parameters
+
         $routePathTmp = explode('/', $route[0]);
-        if(count($routePathTmp) == 3)
-        {
-            $routeVariant[] = $routePathTmp[0];
-            $routeVariant[] = $routePathTmp[0].'/'.$routePathTmp[1];
-            $routeVariant[] = $routePathTmp[0].'/'.$routePathTmp[1].'/'.$routePathTmp[2];
-        }
-        elseif(count($routePathTmp) == 2) {
-            $routeVariant[] = $routePathTmp[0];
-            $routeVariant[] = $routePathTmp[0].'/'.$routePathTmp[1];
-        }
-        else {
-            $routeVariant[] = $routePathTmp[0];
-        }
+        $routeVariant = array_shift($routePathTmp);
+        if(Yii::$app->user->can($routeVariant, $route[1]))
+            return true;
 
-        foreach($routeVariant as $r)
+        foreach($routePathTmp as $routePart)
         {
-
-            if(Yii::$app->user->can($r, $route[1]))
+            $routeVariant .= '/'.$routePart;
+            if(Yii::$app->user->can($routeVariant, $route[1]))
                 return true;
         }
+
         return false;
     }
 }

@@ -198,7 +198,7 @@ class AccessController extends Controller
     {
         if(!empty($value))
         {
-            $value = ltrim(trim($value), '/');
+            $value = trim($value, '/ \t\n\r\0\x0B');
         }
 
         return $value;
