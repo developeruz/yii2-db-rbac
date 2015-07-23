@@ -21,7 +21,7 @@ use yii\validators\RegularExpressionValidator;
 class AccessController extends Controller
 {
     protected $error;
-    protected $pattern4Role = '/^[a-zA-Z0-9-_]+$/';
+    protected $pattern4Role = '/^[a-zA-Z0-9_-]+$/';
     protected $pattern4Permission = '/^[a-zA-Z0-9_\/-]+$/';
 
     public function actions()
@@ -111,11 +111,12 @@ class AccessController extends Controller
 
     public function actionAddPermission()
     {
-        if (Yii::$app->request->post('name')
-            && $this->validate(Yii::$app->request->post('name'), $this->pattern4Permission)
-            && $this->isUnique(Yii::$app->request->post('name'), 'permission')
+        $permission = $this->clear(Yii::$app->request->post('name'));
+        if ($permission
+            && $this->validate($permission, $this->pattern4Permission)
+            && $this->isUnique($permission, 'permission')
         ) {
-            $permit = Yii::$app->authManager->createPermission(Yii::$app->request->post('name'));
+            $permit = Yii::$app->authManager->createPermission($permission);
             $permit->description = Yii::$app->request->post('description', '');
             Yii::$app->authManager->add($permit);
             return $this->redirect(Url::toRoute(['update-permission', 'name' => $permit->name]));
@@ -128,10 +129,12 @@ class AccessController extends Controller
     {
         $permit = Yii::$app->authManager->getPermission($name);
         if ($permit instanceof Permission) {
-            if (Yii::$app->request->post('name')
-                && $this->validate(Yii::$app->request->post('name'), $this->pattern4Permission)
+            $permission = $this->clear(Yii::$app->request->post('name'));
+            if ($permission
+                && $this->validate($permission, $this->pattern4Permission)
             ) {
-                $permit = $this->setAttribute($permit, Yii::$app->request->post());
+                $permit->name = $permission;
+                $permit->description = Yii::$app->request->post('description', '');
                 Yii::$app->authManager->update($name, $permit);
                 return $this->redirect(Url::toRoute(['update-permission', 'name' => $permit->name]));
             }
@@ -189,5 +192,15 @@ class AccessController extends Controller
                 return false;
             } else return true;
         }
+    }
+
+    protected function clear($value)
+    {
+        if(!empty($value))
+        {
+            $value = ltrim(trim($value), '/');
+        }
+
+        return $value;
     }
 }
