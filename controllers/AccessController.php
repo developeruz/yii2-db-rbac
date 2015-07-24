@@ -132,6 +132,7 @@ class AccessController extends Controller
             $permission = $this->clear(Yii::$app->request->post('name'));
             if ($permission
                 && $this->validate($permission, $this->pattern4Permission)
+                && $this->isUnique($permission, 'permission')
             ) {
                 $permit->name = $permission;
                 $permit->description = Yii::$app->request->post('description', '');
@@ -198,7 +199,7 @@ class AccessController extends Controller
     {
         if(!empty($value))
         {
-            $value = trim($value, '/ \t\n\r\0\x0B');
+            $value = trim($value, "/ \t\n\r\0\x0B");
         }
 
         return $value;
