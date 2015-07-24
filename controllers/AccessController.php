@@ -68,6 +68,7 @@ class AccessController extends Controller
         if ($role instanceof Role) {
             if (Yii::$app->request->post('name')
                 && $this->validate(Yii::$app->request->post('name'), $this->pattern4Role)
+                && $this->isUnique(Yii::$app->request->post('name'), 'role')
             ) {
                 $role = $this->setAttribute($role, Yii::$app->request->post());
                 Yii::$app->authManager->update($name, $role);
