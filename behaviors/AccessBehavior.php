@@ -39,7 +39,7 @@ class AccessBehavior extends AttributeBehavior {
         $this->createRule();
         $user = Instance::ensure(Yii::$app->user, User::className());
         $request = Yii::$app->getRequest();
-        $action = $event->sender->module->requestedAction;
+        $action = $event->action;
 
         if(!$this->cheсkByRule($action, $user, $request))
         {
