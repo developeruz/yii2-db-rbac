@@ -45,7 +45,7 @@ class AccessBehavior extends AttributeBehavior {
         {
             //И по AuthManager
             if(!$this->checkPermission($route))
-                throw new BadRequestHttpException('Не достаточно прав');
+                throw new BadRequestHttpException('Недостаточно прав');
         }
     }
 
