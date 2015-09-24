@@ -1,5 +1,6 @@
 <?php
 
+use Yii;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
@@ -7,9 +8,9 @@ use yii\widgets\ActiveForm;
 /* @var $model common\models\Links */
 /* @var $form yii\widgets\ActiveForm */
 
-$this->title = 'Редактирование правила: ' . ' ' . $permit->description;
-$this->params['breadcrumbs'][] = ['label' => 'Правила доступа', 'url' => ['permission']];
-$this->params['breadcrumbs'][] = 'Редактирование правила';
+$this->title = Yii::t('db_rbac', 'Редактирование правила: ') . ' ' . $permit->description;
+$this->params['breadcrumbs'][] = ['label' => Yii::t('db_rbac', 'Правила доступа'), 'url' => ['permission']];
+$this->params['breadcrumbs'][] = Yii::t('db_rbac', 'Редактирование правила');
 ?>
 <div class="news-index">
 
@@ -32,17 +33,17 @@ $this->params['breadcrumbs'][] = 'Редактирование правила';
         <?php $form = ActiveForm::begin(); ?>
 
         <div class="form-group">
-            <?= Html::label('Текстовое описание'); ?>
+            <?= Html::label(Yii::t('db_rbac', 'Текстовое описание')); ?>
             <?= Html::textInput('description', $permit->description); ?>
         </div>
 
         <div class="form-group">
-            <?= Html::label('Разрешенный доступ'); ?>
+            <?= Html::label(Yii::t('db_rbac', 'Разрешенный доступ')); ?>
             <?= Html::textInput('name', $permit->name); ?>
         </div>
 
         <div class="form-group">
-            <?= Html::submitButton('Сохранить', ['class' => 'btn btn-success']) ?>
+            <?= Html::submitButton(Yii::t('db_rbac', 'Сохранить'), ['class' => 'btn btn-success']) ?>
         </div>
 
         <?php ActiveForm::end(); ?>

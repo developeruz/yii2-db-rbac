@@ -1,4 +1,6 @@
 <?php
+
+use Yii;
 use yii\data\ArrayDataProvider;
 use yii\grid\GridView;
 use yii\grid\DataColumn;
@@ -6,7 +8,7 @@ use yii\helpers\Url;
 use yii\helpers\Html;
 use yii\helpers\ArrayHelper;
 
-$this->title = 'Управление ролями';
+$this->title = Yii::t('db_rbac', 'Управление ролями');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="news-index">
@@ -14,7 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Добавить роль', ['add-role'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a(Yii::t('db_rbac', 'Добавить роль'), ['add-role'], ['class' => 'btn btn-success']) ?>
     </p>
 <?php
 $dataProvider = new ArrayDataProvider([
@@ -35,16 +37,16 @@ $dataProvider = new ArrayDataProvider([
         [
             'class'     => DataColumn::className(),
             'attribute' => 'name',
-            'label'     => 'Роль'
+            'label'     => Yii::t('db_rbac', 'Роль')
         ],
         [
             'class'     => DataColumn::className(),
             'attribute' => 'description',
-            'label'     => 'Описание'
+            'label'     => Yii::t('db_rbac', 'Описание')
         ],
         [
             'class'     => DataColumn::className(),
-            'label'     => 'Разрешенные доступы',
+            'label'     => Yii::t('db_rbac', 'Разрешенные доступы'),
             'format'    => ['html'],
             'value'     => function($data) { return implode('<br>',array_keys(ArrayHelper::map(Yii::$app->authManager->getPermissionsByRole($data->name), 'description', 'description')));}
         ],

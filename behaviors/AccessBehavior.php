@@ -16,7 +16,7 @@ use yii\base\Module;
 use yii\web\Application;
 use yii\web\User;
 use yii\filters\AccessControl;
-use yii\web\BadRequestHttpException;
+use yii\web\ForbiddenHttpException;
 
 class AccessBehavior extends AttributeBehavior {
 
@@ -33,6 +33,14 @@ class AccessBehavior extends AttributeBehavior {
 
     public function interception($event)
     {
+        if(!isset( Yii::$app->i18n->translations['db_rbac'])){
+            Yii::$app->i18n->translations['db_rbac'] = [
+                'class' => 'yii\i18n\PhpMessageSource',
+                'sourceLanguage' => 'ru-Ru',
+                'basePath' => '@developeruz/db_rbac/messages',
+            ];
+        }
+
         $route = Yii::$app->getRequest()->resolve();
 
         //Проверяем права по конфигу
@@ -45,7 +53,7 @@ class AccessBehavior extends AttributeBehavior {
         {
             //И по AuthManager
             if(!$this->checkPermission($route))
-                throw new BadRequestHttpException('Недостаточно прав');
+                throw new ForbiddenHttpException(Yii::t('db_rbac','Недостаточно прав'));
         }
     }
 

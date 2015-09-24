@@ -1,15 +1,12 @@
 <?php
 
+use Yii;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
-/* @var $this yii\web\View */
-/* @var $model common\models\Links */
-/* @var $form yii\widgets\ActiveForm */
-
-$this->title = 'Редактирование роли: ' . ' ' . $role->name;
-$this->params['breadcrumbs'][] = ['label' => 'Управление ролями', 'url' => ['role']];
-$this->params['breadcrumbs'][] = 'Редактирование';
+$this->title = Yii::t('db_rbac', 'Редактирование роли: ') . ' ' . $role->name;
+$this->params['breadcrumbs'][] = ['label' => Yii::t('db_rbac', 'Управление ролями'), 'url' => ['role']];
+$this->params['breadcrumbs'][] = Yii::t('db_rbac', 'Редактирование');
 ?>
 <div class="news-index">
 
@@ -32,22 +29,22 @@ $this->params['breadcrumbs'][] = 'Редактирование';
         <?php $form = ActiveForm::begin(); ?>
 
         <div class="form-group">
-            <?= Html::label('Название роли'); ?>
+            <?= Html::label(Yii::t('db_rbac', 'Название роли')); ?>
             <?= Html::textInput('name', $role->name); ?>
         </div>
 
         <div class="form-group">
-            <?= Html::label('Текстовое описание'); ?>
+            <?= Html::label(Yii::t('db_rbac', 'Текстовое описание')); ?>
             <?= Html::textInput('description', $role->description); ?>
         </div>
 
         <div class="form-group">
-            <?= Html::label('Разрешенные доступы'); ?>
+            <?= Html::label(Yii::t('db_rbac', 'Разрешенные доступы')); ?>
             <?= Html::checkboxList('permissions', $role_permit, $permissions, ['separator' => '<br>']); ?>
         </div>
 
         <div class="form-group">
-            <?= Html::submitButton('Сохранить', ['class' => 'btn btn-success']) ?>
+            <?= Html::submitButton(Yii::t('db_rbac', 'Сохранить'), ['class' => 'btn btn-success']) ?>
         </div>
 
         <?php ActiveForm::end(); ?>

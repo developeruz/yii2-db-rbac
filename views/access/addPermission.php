@@ -1,14 +1,15 @@
 <?php
 
+use Yii;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\Links */
 /* @var $form yii\widgets\ActiveForm */
-$this->title = 'Новое правило';
-$this->params['breadcrumbs'][] = ['label' => 'Правила доступа', 'url' => ['permission']];
-$this->params['breadcrumbs'][] = 'Новое правило';
+$this->title = Yii::t('db_rbac', 'Новое правило');
+$this->params['breadcrumbs'][] = ['label' => Yii::t('db_rbac', 'Правила доступа'), 'url' => ['permission']];
+$this->params['breadcrumbs'][] = Yii::t('db_rbac', 'Новое правило');
 ?>
 <div class="news-index">
 
@@ -30,20 +31,21 @@ $this->params['breadcrumbs'][] = 'Новое правило';
         <?php $form = ActiveForm::begin(); ?>
 
         <div class="form-group">
-            <?= Html::label('Текстовое описание'); ?>
+            <?= Html::label(Yii::t('db_rbac', 'Текстовое описание')); ?>
             <?= Html::textInput('description'); ?>
         </div>
 
         <div class="form-group">
-            <?= Html::label('Разрешенный доступ'); ?>
+            <?= Html::label(Yii::t('db_rbac', 'Разрешенный доступ')); ?>
             <?= Html::textInput('name'); ?>
+            <?=Yii::t('db_rbac', '
             * Формат module/controller/action<br>
             site/article - доступ к странице site/article<br>
-            site - доступ к любым action контроллера site
+            site - доступ к любым action контроллера site');?>
         </div>
 
         <div class="form-group">
-            <?= Html::submitButton('Сохранить', ['class' => 'btn btn-success']) ?>
+            <?= Html::submitButton(Yii::t('db_rbac', 'Сохранить'), ['class' => 'btn btn-success']) ?>
         </div>
 
         <?php ActiveForm::end(); ?>

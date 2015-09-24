@@ -1,11 +1,12 @@
 <?php
+use Yii;
 use yii\data\ArrayDataProvider;
 use yii\grid\GridView;
 use yii\grid\DataColumn;
 use yii\helpers\Url;
 use yii\helpers\Html;
 
-$this->title = 'Правила доступа';
+$this->title = Yii::t('db_rbac', 'Правила доступа');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="news-index">
@@ -13,7 +14,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Добавить новое правило', ['add-permission'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a(Yii::t('db_rbac', 'Добавить новое правило'), ['add-permission'], ['class' => 'btn btn-success']) ?>
     </p>
 <?php
 $dataProvider = new ArrayDataProvider([
@@ -34,12 +35,12 @@ $dataProvider = new ArrayDataProvider([
         [
             'class'     => DataColumn::className(),
             'attribute' => 'name',
-            'label'     => 'Правило'
+            'label'     => Yii::t('db_rbac', 'Правило')
         ],
         [
             'class'     => DataColumn::className(),
             'attribute' => 'description',
-            'label'     => 'Описание'
+            'label'     => Yii::t('db_rbac', 'Описание')
         ],
         ['class' => 'yii\grid\ActionColumn',
             'template' => '{update} {delete}',
