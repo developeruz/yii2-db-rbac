@@ -19,7 +19,7 @@
     },
     "autoload": {
         "psr-4": {
-            "developeruz\\db_rbac\\": ""
+            "pashkinz92\\db_rbac\\": ""
         }
     }
 }
