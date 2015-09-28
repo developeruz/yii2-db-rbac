@@ -25,16 +25,15 @@ class UserController extends Controller
     public function beforeAction($action)
     {
         if(empty(Yii::$app->controller->module->params['userClass'])){
-            throw new BadRequestHttpException('userClass params must be set in config file');
+            throw new BadRequestHttpException(Yii::t('db_rbac','Необходимо указать класс User в настройках модуля'));
         }
 
         $user = new Yii::$app->controller->module->params['userClass']();
 
         if(! $user instanceof UserRbacInterface)
         {
-            throw new BadRequestHttpException('userClass must implements developeruz\db_rbac\UserRbacInterface');
+            throw new BadRequestHttpException(Yii::t('db_rbac', 'UserClass должен реализовывать интерфейс developeruz\db_rbac\UserRbacInterface'));
         }
-
         return parent::beforeAction($action);
     }
 
@@ -55,6 +54,15 @@ class UserController extends Controller
                 'actions' => [
                     'update' => ['post'],
                     '*' => ['get'],
+                ],
+            ],
+            'access' => [
+                'class' => \yii\filters\AccessControl::className(),
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => Yii::$app->controller->module->accessRoles,
+                    ],
                 ],
             ],
         ];
@@ -92,7 +100,7 @@ class UserController extends Controller
         $class = new Yii::$app->controller->module->params['userClass']();
         $user = $class::findIdentity($id);
         if(empty($user)){
-            throw new NotFoundHttpException('User not found');
+            throw new NotFoundHttpException(Yii::t('db_rbac', 'Пользователь не найден'));
         } else {
             return $user;
         }
