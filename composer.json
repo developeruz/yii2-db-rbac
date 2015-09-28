@@ -1,5 +1,5 @@
 {
-    "name": "pashkinz92/yii2-db-rbac",
+    "name": "developeruz/yii2-db-rbac",
     "description": "Dynamic control of access rights in YII2",
     "keywords": ["yii", "rbac"],
     "type": "yii2-extension",
@@ -19,7 +19,7 @@
     },
     "autoload": {
         "psr-4": {
-            "pashkinz92\\db_rbac\\": ""
+            "developeruz\\db_rbac\\": ""
         }
     }
 }
