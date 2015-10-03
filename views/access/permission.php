@@ -1,4 +1,6 @@
 <?php
+namespace developeruz\db_rbac\views\access;
+
 use Yii;
 use yii\data\ArrayDataProvider;
 use yii\grid\GridView;
