@@ -59,12 +59,14 @@ $ yii migrate --migrationPath=@yii/rbac/migrations/
 По многочисленным просьбам в модуль добавлен интерфейс для назначения ролей пользователям. 
 
 Для корректной работы модуля нужно указать в параметрах модуля класс `User`.
+Когда через модуль будут созданы роли, то в настройках модуля можно будет указать, с какими ролями пользователь имеет доступ к модулю
 ```php
 'modules' => [
         'permit' => [
             'class' => 'app\modules\db_rbac\Yii2DbRbac',
             'params' => [
-                'userClass' => 'app\models\User'
+                'userClass' => 'app\models\User',                
+                'accessRoles'=>['admin']
             ]
         ],
     ],

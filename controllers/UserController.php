@@ -34,7 +34,6 @@ class UserController extends Controller
         {
             throw new BadRequestHttpException(Yii::t('db_rbac', 'UserClass должен реализовывать интерфейс developeruz\db_rbac\UserRbacInterface'));
         }
-
         return parent::beforeAction($action);
     }
 
@@ -55,6 +54,15 @@ class UserController extends Controller
                 'actions' => [
                     'update' => ['post'],
                     '*' => ['get'],
+                ],
+            ],
+            'access' => [
+                'class' => \yii\filters\AccessControl::className(),
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => Yii::$app->controller->module->accessRoles,
+                    ],
                 ],
             ],
         ];

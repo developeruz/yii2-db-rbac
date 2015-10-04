@@ -33,6 +33,21 @@ class AccessController extends Controller
         ];
     }
 
+    public function behaviors()
+    {
+        return [
+            'access' => [
+                'class' => \yii\filters\AccessControl::className(),
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => Yii::$app->controller->module->accessRoles,
+                    ],
+                ],
+            ],
+        ];
+    }
+
     public function actionRole()
     {
         return $this->render('role');
