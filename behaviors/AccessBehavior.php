@@ -7,7 +7,7 @@
  * @package AccessBehavior for Yii2
  *
  */
-namespace developeruz\db_rbac\behaviors;
+namespace twonottwo\db_rbac\behaviors;
 
 use Yii;
 use yii\behaviors\AttributeBehavior;
@@ -37,7 +37,7 @@ class AccessBehavior extends AttributeBehavior {
             Yii::$app->i18n->translations['db_rbac'] = [
                 'class' => 'yii\i18n\PhpMessageSource',
                 'sourceLanguage' => 'ru-Ru',
-                'basePath' => '@developeruz/db_rbac/messages',
+                'basePath' => '@twonottwo/db_rbac/messages',
             ];
         }
 
