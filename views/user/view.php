@@ -1,5 +1,5 @@
 <?php
-namespace developeruz\db_rbac\views\user;
+namespace twonottwo\db_rbac\views\user;
 
 use Yii;
 use yii\helpers\Html;
