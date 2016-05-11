@@ -6,6 +6,6 @@ return [
     'Страница не найдена' => 'Page not found',
     'Недостаточно прав' => 'You not allow to access',
     'Необходимо указать класс User в настройках модуля' => 'UserClass params must be set in config file',
-    'UserClass должен реализовывать интерфейс twonottwo\db_rbac\UserRbacInterface' => 'UserClass must implements twonottwo\db_rbac\UserRbacInterface',
+    'UserClass должен реализовывать интерфейс developeruz\db_rbac\UserRbacInterface' => 'UserClass must implements developeruz\db_rbac\UserRbacInterface',
     'Пользователь не найден' => 'User not found'
 ];

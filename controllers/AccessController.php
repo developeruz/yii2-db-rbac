@@ -7,7 +7,7 @@
  * @package AccessController for Yii2
  *
  */
-namespace twonottwo\db_rbac\controllers;
+namespace developeruz\db_rbac\controllers;
 
 use Yii;
 use yii\web\Controller;
