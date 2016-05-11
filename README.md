@@ -6,7 +6,7 @@
 
 ###Установка:###
 ```bash
-$ php composer.phar require developeruz/yii2-db-rbac "*"
+$ php composer.phar require twonottwo/yii2-db-rbac "*"
 ```
 
 Для корректной работы модуля необходимо настроить authManager в конфиге приложения (common/config/main.php для advanced или config/web.php и config/console  для basic приложения)
@@ -29,7 +29,7 @@ $ yii migrate --migrationPath=@yii/rbac/migrations/
 ```php
   'modules' => [
         'permit' => [
-            'class' => 'developeruz\db_rbac\Yii2DbRbac',
+            'class' => 'twonottwo\db_rbac\Yii2DbRbac',
         ],
     ],
 ```
@@ -37,7 +37,7 @@ $ yii migrate --migrationPath=@yii/rbac/migrations/
 ```php
   'modules' => [
         'permit' => [
-            'class' => 'developeruz\db_rbac\Yii2DbRbac',
+            'class' => 'twonottwo\db_rbac\Yii2DbRbac',
             'layout' => '//admin'
         ],
     ],
@@ -70,10 +70,10 @@ $ yii migrate --migrationPath=@yii/rbac/migrations/
     ],
 ```
 
-Класс User должен реализовывать интерфейс `developeruz\db_rbac\interfaces\UserRbacInterface`. 
+Класс User должен реализовывать интерфейс `twonottwo\db_rbac\interfaces\UserRbacInterface`.
 В большинстве случаев придется дописать в нем 1 функцию `getUserName()` которая будет возвращать отображаемое имя пользователя.
 ```php
-use developeruz\db_rbac\interfaces\UserRbacInterface;
+use twonottwo\db_rbac\interfaces\UserRbacInterface;
 
 class User extends ActiveRecord implements IdentityInterface, UserRbacInterface
 {
@@ -131,7 +131,7 @@ $permissionName - может быть как ролью так и правом
 ###Подключение поведения###
 В конфиге того приложения, доступ к которому следует проверять на лету, необходимо подключить поведение
 ```php
-use developeruz\db_rbac\behaviors\AccessBehavior;
+use twonottwo\db_rbac\behaviors\AccessBehavior;
 
  'as AccessBehavior' => [
         'class' => AccessBehavior::className(),
