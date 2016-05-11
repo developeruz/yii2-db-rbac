@@ -1,5 +1,5 @@
 <?php
-namespace twonottwo\db_rbac\views\access;
+namespace developeruz\db_rbac\views\access;
 
 use Yii;
 use yii\data\ArrayDataProvider;

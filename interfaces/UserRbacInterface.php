@@ -1,5 +1,5 @@
 <?php
-namespace twonottwo\db_rbac\interfaces;
+namespace developeruz\db_rbac\interfaces;
 
 
 interface UserRbacInterface {

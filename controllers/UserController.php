@@ -7,7 +7,7 @@
  * @package UserController for Yii2
  *
  */
-namespace twonottwo\db_rbac\controllers;
+namespace developeruz\db_rbac\controllers;
 
 use Yii;
 use yii\filters\VerbFilter;
@@ -15,7 +15,7 @@ use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
 use yii\web\Controller;
 use yii\web\BadRequestHttpException;
-use twonottwo\db_rbac\interfaces\UserRbacInterface;
+use developeruz\db_rbac\interfaces\UserRbacInterface;
 use yii\web\NotFoundHttpException;
 
 class UserController extends Controller
@@ -32,7 +32,7 @@ class UserController extends Controller
 
         if(! $user instanceof UserRbacInterface)
         {
-            throw new BadRequestHttpException(Yii::t('db_rbac', 'UserClass должен реализовывать интерфейс twonottwo\db_rbac\UserRbacInterface'));
+            throw new BadRequestHttpException(Yii::t('db_rbac', 'UserClass должен реализовывать интерфейс developeruz\db_rbac\UserRbacInterface'));
         }
 
         return parent::beforeAction($action);
