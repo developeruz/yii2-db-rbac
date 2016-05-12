@@ -59,6 +59,8 @@ $ yii migrate --migrationPath=@yii/rbac/migrations/
 По многочисленным просьбам в модуль добавлен интерфейс для назначения ролей пользователям. 
 
 Для корректной работы модуля нужно указать в параметрах модуля класс `User`.
+
+для basic приложения
 ```php
 'modules' => [
         'permit' => [
@@ -70,8 +72,20 @@ $ yii migrate --migrationPath=@yii/rbac/migrations/
     ],
 ```
 
+для advanced приложения
+```php
+'modules' => [
+        'permit' => [
+            'class' => 'app\modules\db_rbac\Yii2DbRbac',
+            'params' => [
+                'userClass' => 'common\models\User'
+            ]
+        ],
+    ],
+```
+
 Класс User должен реализовывать интерфейс `twonottwo\db_rbac\interfaces\UserRbacInterface`.
-В большинстве случаев придется дописать в нем 1 функцию `getUserName()` которая будет возвращать отображаемое имя пользователя.
+Для возврата отображаемого имени пользователя нужнв функция `getUserName()`
 ```php
 use twonottwo\db_rbac\interfaces\UserRbacInterface;
 
@@ -85,7 +99,7 @@ class User extends ActiveRecord implements IdentityInterface, UserRbacInterface
 }
 ```
 
-**Управление ролью пользователя происходит на странице `/permit/user/view/1` для пользователя с id=1.**
+**Управление ролью пользователя происходит на странице `/permit/user/view?id=1` для пользователя с id=1.**
 Удобнее всего дописать кнопку на эту страницу в Grid со списком пользователей.
 ```php
 echo GridView::widget([
