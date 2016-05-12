@@ -43,20 +43,26 @@ class AccessBehavior extends AttributeBehavior {
 
         $route = Yii::$app->getRequest()->resolve();
 
-        //Проверяем права по конфигу
+        //Проверяем права по настройкам приложения (config/main.php)
         $this->createRule();
         $user = Instance::ensure(Yii::$app->user, User::className());
         $request = Yii::$app->getRequest();
         $action = $event->action;
-
-        if(!$this->cheсkByRule($action, $user, $request))
-        {
-            //И по AuthManager
-            if(!$this->checkPermission($route))
-                throw new ForbiddenHttpException(Yii::t('db_rbac','Недостаточно прав'));
+        if(!$this->cheсkByRule($action, $user, $request)) {
+            //проверка прав доступа по записям в БД
+            if (!$this->checkPermission($route)) {
+                if ($user->getIsGuest()) {
+                    $user->loginRequired();
+                } else {
+                    throw new ForbiddenHttpException(Yii::t('db_rbac', 'Недостаточно прав'));
+                }
+            }
         }
     }
 
+    /**
+     * Заполнит массив $_rules абором правил доступа, описанных в настройках (config/main.php) приложения
+     */
     protected function createRule()
     {
         foreach($this->rules as $controller => $rule)
