@@ -15,8 +15,9 @@ $ composer require twonottwo/yii2-db-rbac "dev-master"
 ```
 Имя ветки может быть отличным от dev-master
 
-Настраиваем authManager приложения (common/config/main.php для advanced приложения, config/web.php и config/console для basic приложения)
+Настраиваем authManager приложения (`common/config/main.php` для advanced приложения, `config/web.php` и `config/console` для basic приложения)
 ```php
+...
 'components' => [
     'authManager' => [
       'class' => 'yii\rbac\DbManager',
@@ -31,10 +32,11 @@ $ yii migrate --migrationPath=@yii/rbac/migrations/
 ```
 
 ##Подключение модуля к приложению##
-В настройках приложения (backend/config/main.php и frontend/config/main.php для advanced и config/web.php для basic приложения) прописываем модуль
+В настройках приложения (`backend/config/main.php` и `frontend/config/main.php` для advanced и `config/web.php` для basic приложения) прописываем модуль
 
 Для basic приложения
 ```php
+...
 'modules' => [
     'permit' => [
         'class' => 'app\modules\db_rbac\Yii2DbRbac',
@@ -43,10 +45,12 @@ $ yii migrate --migrationPath=@yii/rbac/migrations/
         ]
     ],
 ],
+...
 ```
 
 Для advanced приложения
 ```php
+...
 'modules' => [
     'permit' => [
         'class' => 'app\modules\db_rbac\Yii2DbRbac',
@@ -55,22 +59,25 @@ $ yii migrate --migrationPath=@yii/rbac/migrations/
         ]
     ],
 ],
+...
 ```
 
 Для передачи layout дописать:
 ```php
+...
 'modules' => [
     'permit' => [
-        ...
         'layout' => '//admin'
     ],
 ],
+...
 ```
 
-Дописываем в класс User (common/models/User.php для advanced приложения и models/User.php для basic приложения) интерфейс UserRbacInterface и функцию `getUserName()`
+Дописываем в класс User (`common/models/User.php` для advanced приложения и `models/User.php` для basic приложения) интерфейс `UserRbacInterface` и функцию `getUserName()`
 ```php
+...
 use twonottwo\db_rbac\interfaces\UserRbacInterface;
-
+...
 class User extends ActiveRecord implements IdentityInterface, UserRbacInterface
 {
 ...
@@ -78,6 +85,7 @@ class User extends ActiveRecord implements IdentityInterface, UserRbacInterface
     {
        return $this->username;
     }
+...
 }
 ```
 
@@ -91,13 +99,14 @@ class User extends ActiveRecord implements IdentityInterface, UserRbacInterface
 
 **Доступ к настройке разрешений, ролей, назначение ролей пользователю**
 
-***/permit/access/permission - права доступа***
-***/permit/access/role - роли***
-***/permit/user/view?id=N - назначение ролей пользователю, где N - id записи пользователя***
+/permit/access/permission - права доступа
+/permit/access/role - роли
+/permit/user/view?id=N - назначение ролей пользователю, где N - id записи пользователя
 
 
 Пример кода Grid со списком пользователей и кнопкой для перехода к назначению ролей
 ```php
+...
 echo GridView::widget([
     'dataProvider' => $dataProvider,
     'columns' => [
@@ -119,9 +128,10 @@ echo GridView::widget([
         ],
     ],
 ]);
+...
 ```
 
-Присвоить роль пользователю можно в коде, например при создании нового пользователя.
+Присвоить роль пользователю можно в коде, например при создании нового пользователя
 ```php
 $userRole = Yii::$app->authManager->getRole('name_of_role');
 Yii::$app->authManager->assign($userRole, $user->getId());
@@ -135,11 +145,12 @@ $permissionName - может быть как ролью так и правом
 
 ##Проверка прав доступа на лету##
 
-Данное поведение позволяет не писать `Yii::$app->user->can($permissionName);` в каждом action, а проверять права доступа на лету.
+Данное поведение позволяет не писать `Yii::$app->user->can($permissionName);` в каждом action, а проверять права доступа на лету
 
 ###Подключение поведения###
 В настройках того приложения, доступ к которому следует проверять на лету, подключаем поведение
 ```php
+...
 use twonottwo\db_rbac\behaviors\AccessBehavior;
 return [
 ...
@@ -149,7 +160,8 @@ return [
 ...
 ```
 
-С этого момента, после обработки запроса (событие EVENT_AFTER_REQUEST) проверяются права текущего пользователя `(Yii::$app->user)` на выполнение запрашиваемого действия (`Yii::$app->user->can()`)
+С этого момента, после обработки запроса (событие EVENT_AFTER_REQUEST) проверяются права текущего пользователя `(Yii::$app->user)` на выполнение запрашиваемого действия (`Yii::$app->user->can()`).
+
 Действие считается разрешенным, если:
  - пользователю разрешен доступ к конкретному action (правило записано как: module/controller/action)
  - пользователю разрешен доступ к любым action данного контроллера (правило записано как: module/controller)
@@ -160,7 +172,7 @@ return [
 После подключения поведения, доступ становится возможен только авторизованному пользователю, имеющему некие права.
 Для исключений из этого правила можно прописать доступы по умолчанию в том же формате AccessControl, что и в контроллере.
 
-Для backend. При данной настройке ввод логина и пароля обязателен
+При данной настройке ввод логина и пароля обязателен
 ```php
 ...
     'as AccessBehavior' => [
@@ -187,7 +199,7 @@ return [
 ...
 ```
 
-Для frontend. Гости смогут увидеть главную страницу
+А при такой гости смогут увидеть главную страницу
 ```php
 ...
     'as AccessBehavior' => [
