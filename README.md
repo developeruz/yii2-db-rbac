@@ -1,91 +1,73 @@
-Динамическая настройка прав доступа для Yii2
+Модуль настройки прав доступа через web-интерфейс
 ============
 
-Модуль для создания ролей и прав доступа через веб-интерфейс, так же имеющий веб интерфейс для назначения ролей пользователям
-Поведение для приложения, проверяющее право доступа к action по внесенным в модуле правилам.
+Модуль для создания прав доступа, ролей, назначения ролей пользователям через web-интерфейс.
 
-###Установка:###
+###Установка###
+
+Получаем модуль из репозитория
 ```bash
-$ php composer.phar require twonottwo/yii2-db-rbac "*"
+$ php composer.phar require twonottwo/yii2-db-rbac "dev-master"
 ```
+либо
+```bash
+$ composer require twonottwo/yii2-db-rbac "dev-master"
+```
+Имя ветки может быть отличным от dev-master
 
-Для корректной работы модуля необходимо настроить authManager в конфиге приложения (common/config/main.php для advanced или config/web.php и config/console  для basic приложения)
+Настраиваем authManager приложения (common/config/main.php для advanced приложения, config/web.php и config/console для basic приложения)
 ```php
-    'components' => [
-       'authManager' => [
-          'class' => 'yii\rbac\DbManager',
-        ],
-    ...
-    ]
+'components' => [
+    'authManager' => [
+      'class' => 'yii\rbac\DbManager',
+    ],
+...
+]
 ```
 
-И выполнить миграции, создающие таблицы для DbManager (подразумевается, что коннект к БД для приложения уже настроен)
+Выполняем миграцию создания таблиц для DbManager
 ```bash
 $ yii migrate --migrationPath=@yii/rbac/migrations/
 ```
 
-##Подключение модуля##
-В конфиге приложения (backend/config/main.php для advanced или config/web.php для basic приложения) прописываем модуль
-```php
-  'modules' => [
-        'permit' => [
-            'class' => 'twonottwo\db_rbac\Yii2DbRbac',
-        ],
-    ],
-```
-Если нужно передать layout это можно сделать так:
-```php
-  'modules' => [
-        'permit' => [
-            'class' => 'twonottwo\db_rbac\Yii2DbRbac',
-            'layout' => '//admin'
-        ],
-    ],
-```
+##Подключение модуля к приложению##
+В настройках приложения (backend/config/main.php и frontend/config/main.php для advanced и config/web.php для basic приложения) прописываем модуль
 
-Если вы используете ЧПУ, то убедитесь что у вас прописаны правила роутинга для модулей
-```php
-'<module:\w+>/<controller:\w+>/<action:(\w|-)+>' => '<module>/<controller>/<action>',
-'<module:\w+>/<controller:\w+>/<action:(\w|-)+>/<id:\d+>' => '<module>/<controller>/<action>',
-```
-
-**Добавляем ссылки в меню**
-
-**/permit/access/role - управление ролями**
-
-**/permit/access/permission - управление правами доступа**
-
-###Назначение ролей пользователям###
-По многочисленным просьбам в модуль добавлен интерфейс для назначения ролей пользователям. 
-
-Для корректной работы модуля нужно указать в параметрах модуля класс `User`.
-
-для basic приложения
+Для basic приложения
 ```php
 'modules' => [
-        'permit' => [
-            'class' => 'app\modules\db_rbac\Yii2DbRbac',
-            'params' => [
-                'userClass' => 'app\models\User'
-            ]
-        ],
+    'permit' => [
+        'class' => 'app\modules\db_rbac\Yii2DbRbac',
+        'params' => [
+            'userClass' => 'app\models\User'
+        ]
     ],
+],
 ```
 
-для advanced приложения
+Для advanced приложения
 ```php
 'modules' => [
-        'permit' => [
-            'class' => 'app\modules\db_rbac\Yii2DbRbac',
-            'params' => [
-                'userClass' => 'common\models\User'
-            ]
-        ],
+    'permit' => [
+        'class' => 'app\modules\db_rbac\Yii2DbRbac',
+        'params' => [
+            'userClass' => 'common\models\User'
+        ]
     ],
+],
 ```
 
-Класс User должен реализовывать интерфейс `twonottwo\db_rbac\interfaces\UserRbacInterface`.
-Для возврата отображаемого имени пользователя нужнв функция `getUserName()`
+Для передачи layout дописать:
+```php
+'modules' => [
+    'permit' => [
+        ...
+        'layout' => '//admin'
+    ],
+],
+```
+
+Дописываем в класс User (common/models/User.php для advanced приложения и models/User.php для basic приложения) интерфейс UserRbacInterface и функцию `getUserName()`
 ```php
 use twonottwo\db_rbac\interfaces\UserRbacInterface;
 
@@ -99,8 +81,22 @@ class User extends ActiveRecord implements IdentityInterface, UserRbacInterface
 }
 ```
 
-**Управление ролью пользователя происходит на странице `/permit/user/view?id=1` для пользователя с id=1.**
-Удобнее всего дописать кнопку на эту страницу в Grid со списком пользователей.
+
+
+Если вы используете ЧПУ, то убедитесь что у вас прописаны правила роутинга для модулей
+```php
+'<module:\w+>/<controller:\w+>/<action:(\w|-)+>' => '<module>/<controller>/<action>',
+'<module:\w+>/<controller:\w+>/<action:(\w|-)+>/<id:\d+>' => '<module>/<controller>/<action>',
+```
+
+**Доступ к настройке разрешений, ролей, назначение ролей пользователю**
+
+***/permit/access/permission - права доступа***
+***/permit/access/role - роли***
+***/permit/user/view?id=N - назначение ролей пользователю, где N - id записи пользователя***
+
+
+Пример кода Grid со списком пользователей и кнопкой для перехода к назначению ролей
 ```php
 echo GridView::widget([
     'dataProvider' => $dataProvider,
@@ -110,22 +106,22 @@ echo GridView::widget([
         'id',
         'username',
         'email:email',
-
-        ['class' => 'yii\grid\ActionColumn',
-         'template' => '{view}&nbsp;&nbsp;{update}&nbsp;&nbsp;{permit}&nbsp;&nbsp;{delete}',
-         'buttons' =>
-             [
-                 'permit' => function ($url, $model) {
-                     return Html::a('<span class="glyphicon glyphicon-wrench"></span>', Url::to(['/permit/user/view', 'id' => $model->id]), [
-                         'title' => Yii::t('yii', 'Change user role')
-                     ]); },
-             ]
+        [
+            'class' => 'yii\grid\ActionColumn',
+            'template' => '{view}&nbsp;&nbsp;{update}&nbsp;&nbsp;{permit}&nbsp;&nbsp;{delete}',
+            'buttons' => [
+                'permit' => function ($url, $model) {
+                    return Html::a('<span class="glyphicon glyphicon-wrench"></span>', Url::to(['/permit/user/view', 'id' => $model->id]), [
+                        'title' => Yii::t('yii', 'Change user role')
+                    ]);
+                },
+            ]
         ],
     ],
 ]);
 ```
 
-Присвоить роль пользователю можно и в коде, например при создании нового пользователя. 
+Присвоить роль пользователю можно в коде, например при создании нового пользователя.
 ```php
 $userRole = Yii::$app->authManager->getRole('name_of_role');
 Yii::$app->authManager->assign($userRole, $user->getId());
@@ -137,47 +133,85 @@ Yii::$app->user->can($permissionName);
 ```
 $permissionName - может быть как ролью так и правом
 
-##Поведение, динамически проверяющее наличие прав##
+##Проверка прав доступа на лету##
 
-Данное поведение позволяет не писать Yii::$app->user->can($permissionName); в каждом action, а проверять права доступа на лету.
-Это удобно для гибкой настройки прав при использовании сторонних модулей.
+Данное поведение позволяет не писать `Yii::$app->user->can($permissionName);` в каждом action, а проверять права доступа на лету.
 
 ###Подключение поведения###
-В конфиге того приложения, доступ к которому следует проверять на лету, необходимо подключить поведение
+В настройках того приложения, доступ к которому следует проверять на лету, подключаем поведение
 ```php
 use twonottwo\db_rbac\behaviors\AccessBehavior;
-
- 'as AccessBehavior' => [
+return [
+...
+    'as AccessBehavior' => [
         'class' => AccessBehavior::className(),
- ]
+    ]
+...
 ```
-С этого момента, после обработки запроса (событие EVENT_AFTER_REQUEST) проверяются права текущего пользователя (Yii::$app->user) на выполнение запрашиваемого действия (Yii::$app->user->can())
+
+С этого момента, после обработки запроса (событие EVENT_AFTER_REQUEST) проверяются права текущего пользователя `(Yii::$app->user)` на выполнение запрашиваемого действия (`Yii::$app->user->can()`)
 Действие считается разрешенным, если:
  - пользователю разрешен доступ к конкретному action (правило записано как: module/controller/action)
  - пользователю разрешен доступ к любым action данного контроллера (правило записано как: module/controller)
  - пользователю разрешен доступ к любым action данного модуля (правило записано как: module)
 
 ###Настройка прав доступа по умолчанию###
+
 После подключения поведения, доступ становится возможен только авторизованному пользователю, имеющему некие права.
-Для исключений из этого правила можно прописать доступы по умолчанию в том же формате AccessControl, что и в контроллере:
+Для исключений из этого правила можно прописать доступы по умолчанию в том же формате AccessControl, что и в контроллере.
+
+Для backend. При данной настройке ввод логина и пароля обязателен
 ```php
+...
     'as AccessBehavior' => [
         'class' => AccessBehavior::className(),
-        'rules' =>
-            ['site' =>
+        'rules' => [
+            'site' => [
                 [
-                    [
-                        'actions' => ['login', 'index'],
-                        'allow' => true,
-                    ],
-                    [
-                        'actions' => ['about'],
-                        'allow' => true,
-                        'roles' => ['admin'],
-                    ],
-                ]
+                    'actions' => ['error'],
+                    'allow' => true,
+                ],
+                [
+                    'actions' => ['login'],
+                    'allow' => true,
+                    'roles' => ['?'],
+                ],
+                [
+                    'actions' => ['logout' ],
+                    'allow' => true,
+                    'roles' => ['@'],
+                ],
             ]
-    ]
+        ]
+    ],
+...
 ```
-В приведенном выше примере разрешен доступ любому пользователю к site/login и site/index и доступ пользователя с ролью admin к site/about
-Правила прописанные в конфиге имеют приоритет над динамически настраиваемыми правилами.
+
+Для frontend. Гости смогут увидеть главную страницу
+```php
+...
+    'as AccessBehavior' => [
+        'class' => AccessBehavior::className(),
+        'rules' =>[
+            'site' => [
+                [
+                    'actions' => ['error'],
+                    'allow' => true,
+                ],
+                [
+                    'actions' => ['login', 'index'],
+                    'allow' => true,
+                    'roles' => ['?']
+                ],
+                [
+                    'actions' => ['logout'],
+                    'allow' => true,
+                    'roles' => ['@'],
+                ],
+            ]
+        ]
+    ],
+...
+```
+
+Правила прописанные в настройках приложения имеют приоритет над динамически настраиваемыми правилами.
