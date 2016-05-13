@@ -89,10 +89,9 @@ class User extends ActiveRecord implements IdentityInterface, UserRbacInterface 
 ```
 
 **Доступ к настройке разрешений, ролей, назначение ролей пользователю**
-
-/permit/access/permission - права доступа
-/permit/access/role - роли
-/permit/user/view?id=N - назначение ролей пользователю, где N - id записи пользователя
+- /permit/access/permission - права доступа
+- /permit/access/role - роли
+- /permit/user/view?id=N - назначение ролей пользователю, где N - id записи пользователя
 
 
 Пример кода Grid со списком пользователей и кнопкой для перехода к назначению ролей
