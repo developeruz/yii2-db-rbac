@@ -9,13 +9,13 @@ use yii\widgets\ActiveForm;
 /* @var $model common\models\Links */
 /* @var $form yii\widgets\ActiveForm */
 
-$this->title = Yii::t('db_rbac', 'Редактирование разрешения: ') . ' ' . $permit->description;
+$this->title = Yii::t('db_rbac', 'Редактирование разрешения');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('db_rbac', 'Разрешения на доступ'), 'url' => ['permission']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="news-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <h1><?= Html::encode($this->title.': '. $permit->description) ?></h1>
 
     <div class="links-form">
 

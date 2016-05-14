@@ -38,7 +38,7 @@ $dataProvider = new ArrayDataProvider([
         [
             'class'     => DataColumn::className(),
             'attribute' => 'name',
-            'label'     => Yii::t('db_rbac', 'Роль')
+            'label'     => Yii::t('db_rbac', 'Название роли')
         ],
         [
             'class'     => DataColumn::className(),

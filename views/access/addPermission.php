@@ -37,7 +37,7 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
 
         <div class="form-group">
-            <?= Html::label(Yii::t('db_rbac', 'Разрешение на доступ')); ?>
+            <?= Html::label(Yii::t('db_rbac', 'Название разрешения')); ?>
             <?= Html::textInput('name'); ?>
             <?=Yii::t('db_rbac', '
             * Формат module/controller/action<br>

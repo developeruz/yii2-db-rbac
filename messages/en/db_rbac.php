@@ -18,7 +18,7 @@ return [
 
     'Добавить новое разрешение' => 'Add new permission',
     'Новое разрешение' => 'New permission',
-    'Разрешение' => 'Permission',
+    'Название разрешения' => 'Permission name',
     'Редактирование разрешения' => 'Update permission',
 
 
