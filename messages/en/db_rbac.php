@@ -7,5 +7,30 @@ return [
     'Недостаточно прав' => 'You not allow to access',
     'Необходимо указать класс User в настройках модуля' => 'UserClass params must be set in config file',
     'UserClass должен реализовывать интерфейс twonottwo\db_rbac\UserRbacInterface' => 'UserClass must implements twonottwo\db_rbac\UserRbacInterface',
-    'Пользователь не найден' => 'User not found'
+    'Пользователь не найден' => 'User not found',
+    'Отказано в авторизации' => 'Denied authorization',
+
+    'Описание' => 'Descriptions',
+
+    'Разрешение на доступ' => 'Access permission',
+    'Разрешения на доступ' => 'Access permission',
+    'Разрешенные доступы' => 'Access permissions',
+
+    'Добавить новое разрешение' => 'Add new permission',
+    'Новое разрешение' => 'New permission',
+    'Разрешение' => 'Permission',
+    'Редактирование разрешения' => 'Update permission',
+
+
+    'Новая роль' => 'New role',
+    'Управление ролями' => 'Managing roles',
+    'Название роли' => 'Role name',
+    'Использовать разрешения' => 'Use permission',
+    'Добавить новую роль' => 'Add new role',
+    'Редактирование роли' => 'Update role',
+
+    'Назначение ролей' => 'Assign roles',
+
+
+
 ];

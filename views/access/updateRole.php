@@ -5,9 +5,9 @@ use Yii;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
-$this->title = Yii::t('db_rbac', 'Редактирование роли: ') . ' ' . $role->name;
+$this->title = Yii::t('db_rbac', 'Редактирование роли') . ': ' . $role->name;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('db_rbac', 'Управление ролями'), 'url' => ['role']];
-$this->params['breadcrumbs'][] = Yii::t('db_rbac', 'Редактирование');
+$this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="news-index">
 
@@ -35,7 +35,7 @@ $this->params['breadcrumbs'][] = Yii::t('db_rbac', 'Редактирование
         </div>
 
         <div class="form-group">
-            <?= Html::label(Yii::t('db_rbac', 'Текстовое описание')); ?>
+            <?= Html::label(Yii::t('db_rbac', 'Описание')); ?>
             <?= Html::textInput('description', $role->description); ?>
         </div>
 

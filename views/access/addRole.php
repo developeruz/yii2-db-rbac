@@ -11,7 +11,7 @@ use yii\widgets\ActiveForm;
 
 $this->title = Yii::t('db_rbac', 'Новая роль');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('db_rbac', 'Управление ролями'), 'url' => ['role']];
-$this->params['breadcrumbs'][] = 'Новая роль';
+$this->params['breadcrumbs'][] = Yii::t('db_rbac', 'Новая роль');
 ?>
 <div class="news-index">
 
@@ -38,17 +38,17 @@ $this->params['breadcrumbs'][] = 'Новая роль';
         </div>
 
         <div class="form-group">
-            <?= Html::label(Yii::t('db_rbac', 'Текстовое описание')); ?>
+            <?= Html::label(Yii::t('db_rbac', 'Описание')); ?>
             <?= Html::textInput('description'); ?>
         </div>
 
         <div class="form-group">
-            <?= Html::label(Yii::t('db_rbac', 'Разрешенные доступы')); ?>
+            <?= Html::label(Yii::t('db_rbac', 'Использовать разрешения')); ?>
             <?= Html::checkboxList('permissions', null, $permissions, ['separator' => '<br>']); ?>
         </div>
 
         <div class="form-group">
-            <?= Html::submitButton(Yii::t('db_rbac', 'Сохранить'), ['class' => 'btn btn-success']) ?>
+            <?= Html::submitButton(Yii::t('yii', 'Save'), ['class' => 'btn btn-success']) ?>
         </div>
 
         <?php ActiveForm::end(); ?>
