@@ -9,41 +9,36 @@ $this->title = Yii::t('db_rbac', 'Редактирование разрешен�
 $this->params['breadcrumbs'][] = ['label' => Yii::t('db_rbac', 'Разрешения на доступ'), 'url' => ['permission']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="news-index">
-
+<div class="permit-update-permission">
     <h3><?= Html::encode($this->title. ': '. $permit->description) ?></h3>
 
-    <div class="links-form">
-
-        <?php
-        if (!empty($error)) {
-            ?>
-            <div class="error-summary">
-                <?php
-                echo implode('<br>', $error);
-                ?>
+    <div class="row">
+        <div class="col-lg-5">
+            <?php ActiveForm::begin(); ?>
+            <div class="form-group">
+                <?= Html::label(Yii::t('db_rbac', 'Название разрешения')); ?>
+                <?= Html::textInput('name', $permit->name, ['class' => 'form-control']); ?>
             </div>
-        <?php
-        }
-        ?>
 
-        <?php $form = ActiveForm::begin(); ?>
+            <div class="form-group">
+                <?= Html::label(Yii::t('db_rbac', 'Описание')); ?>
+                <?= Html::textInput('description', $permit->description, ['class' => 'form-control']); ?>
+            </div>
 
-        <div class="form-group">
-            <?= Html::label(Yii::t('db_rbac', 'Описание')); ?>
-            <?= Html::textInput('description', $permit->description); ?>
+
+
+            <div class="form-group">
+                <?= Yii::t('db_rbac', '
+                * Формат module/controller/action<br>
+                site/article - доступ к странице site/article<br>
+                site - доступ к любым action контроллера site');?>
+            </div>
+
+            <div class="form-group">
+                <?= Html::submitButton(Yii::t('db_rbac', 'Сохранить'), ['class' => 'btn btn-success']) ?>
+            </div>
+
+            <?php ActiveForm::end(); ?>
         </div>
-
-        <div class="form-group">
-            <?= Html::label(Yii::t('db_rbac', 'Разрешение на доступ')); ?>
-            <?= Html::textInput('name', $permit->name); ?>
-        </div>
-
-        <div class="form-group">
-            <?= Html::submitButton(Yii::t('db_rbac', 'Сохранить'), ['class' => 'btn btn-success']) ?>
-        </div>
-
-        <?php ActiveForm::end(); ?>
-
     </div>
 </div>
