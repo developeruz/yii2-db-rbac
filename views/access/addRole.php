@@ -29,7 +29,7 @@ $this->params['breadcrumbs'][] = Yii::t('db_rbac', 'Новая роль');
             </div>
 
             <div class="form-group">
-                <?= Html::label(Yii::t('db_rbac', 'Использовать разрешения')); ?>
+                <?= Html::label(Yii::t('db_rbac', 'Есть доступ к')); ?>
                 <?= Html::checkboxList('permissions', null, $permissions, ['separator' => '<br>']); ?>
             </div>
 
