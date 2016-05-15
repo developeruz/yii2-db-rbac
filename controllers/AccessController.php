@@ -106,7 +106,7 @@ class AccessController extends Controller
                 ]
             );
         } else {
-            throw new BadRequestHttpException(Yii::t('db_rbac', 'Страница не найдена'));
+            throw new BadRequestHttpException(Yii::t('yii', 'Page not found.'));
         }
     }
 
@@ -173,7 +173,7 @@ class AccessController extends Controller
                 'permit' => $permit,
                 'error' => $this->error
             ]);
-        } else throw new BadRequestHttpException(Yii::t('db_rbac', 'Страница не найдена'));
+        } else throw new BadRequestHttpException(Yii::t('yii', 'Page not found.'));
     }
 
     public function actionDeletePermission($name)
@@ -215,13 +215,13 @@ class AccessController extends Controller
         if ($type == 'role') {
             $role = Yii::$app->authManager->getRole($name);
             if ($role instanceof Role) {
-                $this->error[] = Yii::t('db_rbac', 'Роль с таким именем уже существует: ') . $name;
+                $this->error[] = Yii::t('db_rbac', 'Роль с таким именем уже существует') .':'. $name;
                 return false;
             } else return true;
         } elseif ($type == 'permission') {
             $permission = Yii::$app->authManager->getPermission($name);
             if ($permission instanceof Permission) {
-                $this->error[] = Yii::t('db_rbac', 'Правило с таким именем уже существует: ') . $name;
+                $this->error[] = Yii::t('db_rbac', 'Разрешение с таким именем уже существует') .':'. $name;
                 return false;
             } else return true;
         }

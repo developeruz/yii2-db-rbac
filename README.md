@@ -85,11 +85,11 @@ class User extends ActiveRecord implements IdentityInterface, UserRbacInterface 
 Пример выпадающего списка 'контроль доступа'
 ```php
 $menuItems[] = [
-            'label' => 'контроль доступа',
+            'label' => Yii::t('db_rbac', 'Контроль доступа'),
             'items' => [
-                ['label' => 'права доступа', 'url' => '/permit/access/permission'],
-                ['label' => 'роли', 'url' => '/permit/access/role'],
-                ['label' => 'пользователь', 'url' => '/permit/user/view?id=1'],
+                ['label' => Yii::t('db_rbac', 'Разрешения'), 'url' => '/permit/access/permission'],
+                ['label' => Yii::t('db_rbac', 'Роли'), 'url' => '/permit/access/role'],
+                ['label' => Yii::t('db_rbac', 'Назначение ролей'), 'url' => '/permit/user/view?id=1'],
             ]
         ];
 ```

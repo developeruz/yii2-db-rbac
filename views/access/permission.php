@@ -8,15 +8,15 @@ use yii\grid\DataColumn;
 use yii\helpers\Url;
 use yii\helpers\Html;
 
-$this->title = Yii::t('db_rbac', 'Правила доступа');
+$this->title = Yii::t('db_rbac', 'Разрешения на доступ');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="news-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <h3><?= Html::encode($this->title) ?></h3>
 
     <p>
-        <?= Html::a(Yii::t('db_rbac', 'Добавить новое правило'), ['add-permission'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a(Yii::t('db_rbac', 'Добавить новое разрешение'), ['add-permission'], ['class' => 'btn btn-success']) ?>
     </p>
 <?php
 $dataProvider = new ArrayDataProvider([
@@ -37,7 +37,7 @@ $dataProvider = new ArrayDataProvider([
         [
             'class'     => DataColumn::className(),
             'attribute' => 'name',
-            'label'     => Yii::t('db_rbac', 'Правило')
+            'label'     => Yii::t('db_rbac', 'Название разрешения')
         ],
         [
             'class'     => DataColumn::className(),

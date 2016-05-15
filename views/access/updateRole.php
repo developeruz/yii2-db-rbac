@@ -5,13 +5,13 @@ use Yii;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
-$this->title = Yii::t('db_rbac', 'Редактирование роли: ') . ' ' . $role->name;
+$this->title = Yii::t('db_rbac', 'Редактирование роли');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('db_rbac', 'Управление ролями'), 'url' => ['role']];
-$this->params['breadcrumbs'][] = Yii::t('db_rbac', 'Редактирование');
+$this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="news-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <h1><?= Html::encode($this->title. ': ' . $role->name) ?></h1>
 
     <div class="links-form">
 
@@ -35,7 +35,7 @@ $this->params['breadcrumbs'][] = Yii::t('db_rbac', 'Редактирование
         </div>
 
         <div class="form-group">
-            <?= Html::label(Yii::t('db_rbac', 'Текстовое описание')); ?>
+            <?= Html::label(Yii::t('db_rbac', 'Описание')); ?>
             <?= Html::textInput('description', $role->description); ?>
         </div>
 
@@ -45,7 +45,7 @@ $this->params['breadcrumbs'][] = Yii::t('db_rbac', 'Редактирование
         </div>
 
         <div class="form-group">
-            <?= Html::submitButton(Yii::t('db_rbac', 'Сохранить'), ['class' => 'btn btn-success']) ?>
+            <?= Html::submitButton(Yii::t('yii', 'Save'), ['class' => 'btn btn-success']) ?>
         </div>
 
         <?php ActiveForm::end(); ?>

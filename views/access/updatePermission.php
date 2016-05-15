@@ -5,17 +5,13 @@ use Yii;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
-/* @var $this yii\web\View */
-/* @var $model common\models\Links */
-/* @var $form yii\widgets\ActiveForm */
-
-$this->title = Yii::t('db_rbac', 'Редактирование правила: ') . ' ' . $permit->description;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('db_rbac', 'Правила доступа'), 'url' => ['permission']];
-$this->params['breadcrumbs'][] = Yii::t('db_rbac', 'Редактирование правила');
+$this->title = Yii::t('db_rbac', 'Редактирование разрешения');
+$this->params['breadcrumbs'][] = ['label' => Yii::t('db_rbac', 'Разрешения на доступ'), 'url' => ['permission']];
+$this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="news-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <h3><?= Html::encode($this->title. ': '. $permit->description) ?></h3>
 
     <div class="links-form">
 
@@ -34,12 +30,12 @@ $this->params['breadcrumbs'][] = Yii::t('db_rbac', 'Редактирование
         <?php $form = ActiveForm::begin(); ?>
 
         <div class="form-group">
-            <?= Html::label(Yii::t('db_rbac', 'Текстовое описание')); ?>
+            <?= Html::label(Yii::t('db_rbac', 'Описание')); ?>
             <?= Html::textInput('description', $permit->description); ?>
         </div>
 
         <div class="form-group">
-            <?= Html::label(Yii::t('db_rbac', 'Разрешенный доступ')); ?>
+            <?= Html::label(Yii::t('db_rbac', 'Разрешение на доступ')); ?>
             <?= Html::textInput('name', $permit->name); ?>
         </div>
 
