@@ -61,7 +61,7 @@ class AccessBehavior extends AttributeBehavior {
     }
 
     /**
-     * Заполнит массив $_rules абором правил доступа, описанных в настройках (config/main.php) приложения
+     * Заполнит массив $_rules набором правил доступа, описанных в настройках (config/main.php) приложения
      */
     protected function createRule()
     {
