@@ -21,6 +21,8 @@ use yii\web\ForbiddenHttpException;
 class AccessBehavior extends AttributeBehavior {
 
     public $rules=[];
+    public $redirect_url = false;
+    public $login_url = false;
 
     private $_rules = [];
 
@@ -52,8 +54,20 @@ class AccessBehavior extends AttributeBehavior {
         if(!$this->cheсkByRule($action, $user, $request))
         {
             //И по AuthManager
-            if(!$this->checkPermission($route))
-                throw new ForbiddenHttpException(Yii::t('db_rbac','Недостаточно прав'));
+            if(!$this->checkPermission($route)){
+                //Если задан $login_url и пользователь не авторизован
+                if(Yii::$app->user->isGuest && $this->login_url){
+                    Yii::$app->response->redirect($this->login_url)->send();
+                    exit();
+                }
+                //Если задан $redirect_url
+                if($this->redirect_url){
+                    Yii::$app->response->redirect($this->redirect_url)->send();
+                    exit();
+                }else {
+                    throw new ForbiddenHttpException(Yii::t('db_rbac', 'Недостаточно прав'));
+                }
+            }
         }
     }
 
