@@ -15,11 +15,16 @@ class Yii2DbRbac extends \yii\base\Module
 {
     public $controllerNamespace = 'developeruz\db_rbac\controllers';
     public $userClass;
+    public $theme = false;
 
     public function init()
     {
         parent::init();
         $this->registerTranslations();
+
+        if($this->theme){
+            Yii::$app->view->theme = new \yii\base\Theme($this->theme);
+        }
     }
 
     public function registerTranslations()
