@@ -6,7 +6,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 $this->title = Yii::t('db_rbac', 'Редактирование разрешения');
-$this->params['breadcrumbs'][] = ['label' => Yii::t('db_rbac', 'Разрешения на доступ'), 'url' => ['permission']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('db_rbac', 'Разрешения'), 'url' => ['permission']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="permit-update-permission">

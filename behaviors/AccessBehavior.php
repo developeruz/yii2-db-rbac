@@ -41,7 +41,9 @@ class AccessBehavior extends AttributeBehavior {
             ];
         }
 
+
         $route = Yii::$app->getRequest()->resolve();
+        $route[] = Yii::$app->id;
 
         //Проверяем права по настройкам приложения (config/main.php)
         $this->createRule();
@@ -90,10 +92,14 @@ class AccessBehavior extends AttributeBehavior {
 
     protected function checkPermission($route)
     {
+
         //$route[0] - is the route, $route[1] - is the associated parameters
 
         $routePathTmp = explode('/', $route[0]);
         $routeVariant = array_shift($routePathTmp);
+        $routeApp = explode('/', $route[2]);
+        $routeApp = $routeApp[0];
+
         if(Yii::$app->user->can($routeVariant, $route[1]))
             return true;
 
@@ -102,6 +108,11 @@ class AccessBehavior extends AttributeBehavior {
             $routeVariant .= '/'.$routePart;
             if(Yii::$app->user->can($routeVariant, $route[1]))
                 return true;
+
+            $routeVariant = $routeApp.'/'.$routeVariant;
+            if(Yii::$app->user->can($routeVariant, $route[1]))
+                return true;
+
         }
 
         return false;
