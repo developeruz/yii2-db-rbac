@@ -38,6 +38,11 @@ $ composer require twonottwo/yii2-db-rbac "dev-master"
 $ yii migrate --migrationPath=@yii/rbac/migrations/
 ```
 
+Заполняем таблицы первоначальными данными. Заносимые данные необходимо проверить перед выполнением команды
+```bash
+$ yii migrate --migrationPath=vendor/twonottwo/yii2-db-rbac/migrations/
+```
+
 ##Подключение модуля к приложению##
 В настройках приложения прописываем модуль `permit` (`backend/config/main.php` для advanced и `config/web.php` для basic приложения)
 
