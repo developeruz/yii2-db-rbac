@@ -42,7 +42,7 @@ class AccessController extends Controller
     {
         if (Yii::$app->request->post('name')
             && $this->validate(Yii::$app->request->post('name'), $this->pattern4Role)
-            && $this->isUnique(Yii::$app->request->post('name'), 'role')
+            && $this->isUnique(Yii::$app->request->post('name'))
         ) {
             $role = Yii::$app->authManager->createRole(Yii::$app->request->post('name'));
             $role->description = Yii::$app->request->post('description');
@@ -88,8 +88,7 @@ class AccessController extends Controller
                 }
                 $role = $this->setAttribute($role, Yii::$app->request->post());
                 Yii::$app->authManager->update($name, $role);
-                Yii::$app->authManager->removeChildren($role);
-                $this->setPermissions(Yii::$app->request->post('permissions', []), $role);
+                $this->updatePermissions($permissions, Yii::$app->request->post('permissions', []), $role);
                 return $this->redirect(Url::toRoute([
                     'update-role',
                     'name' => $role->name
@@ -152,7 +151,7 @@ class AccessController extends Controller
             $permission = $this->clear(Yii::$app->request->post('name'));
             if ($permission && $this->validate($permission, $this->pattern4Permission)
             ) {
-                if($permission!= $name && !$this->isUnique($permission, 'permission'))
+                if($permission!= $name && !$this->isUnique($permission))
                 {
                     return $this->render('updatePermission', [
                         'permit' => $permit,
@@ -199,6 +198,19 @@ class AccessController extends Controller
         }
     }
 
+    protected function updatePermissions($allPermissions, $selectedPermissions, $role)
+    {
+        foreach ($allPermissions as $permit) {
+            $permission = Yii::$app->authManager->getPermission($permit);
+            if(in_array($permit, $selectedPermissions) && !$permission instanceof Permission){
+                Yii::$app->authManager->addChild($role, $permission);
+            }
+            elseif($permission instanceof Permission){
+                Yii::$app->authManager->removeChild($role, $permission);
+            }
+        }
+    }
+
     protected function validate($field, $regex)
     {
         $validator = new RegularExpressionValidator(['pattern' => $regex]);
@@ -210,21 +222,19 @@ class AccessController extends Controller
         }
     }
 
-    protected function isUnique($name, $type)
+    protected function isUnique($name)
     {
-        if ($type == 'role') {
-            $role = Yii::$app->authManager->getRole($name);
-            if ($role instanceof Role) {
-                $this->error[] = Yii::t('db_rbac', 'Роль с таким именем уже существует: ') . $name;
-                return false;
-            } else return true;
-        } elseif ($type == 'permission') {
-            $permission = Yii::$app->authManager->getPermission($name);
-            if ($permission instanceof Permission) {
-                $this->error[] = Yii::t('db_rbac', 'Правило с таким именем уже существует: ') . $name;
-                return false;
-            } else return true;
+        $role = Yii::$app->authManager->getRole($name);
+        $permission = Yii::$app->authManager->getPermission($name);
+        if ($permission instanceof Permission){
+            $this->error[] = Yii::t('db_rbac', 'Разрешение с таким именем уже существует') .':'. $name;
+            return false;
         }
+        if ($role instanceof Role) {
+            $this->error[] = Yii::t('db_rbac', 'Роль с таким именем уже существует') .':'. $name;
+            return false;
+        }
+        return true;
     }
 
     protected function clear($value)
