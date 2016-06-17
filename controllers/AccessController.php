@@ -200,12 +200,13 @@ class AccessController extends Controller
 
     protected function updatePermissions($allPermissions, $selectedPermissions, $role)
     {
-        foreach ($allPermissions as $permit) {
+        foreach ($allPermissions as $permit => $description) {
             $permission = Yii::$app->authManager->getPermission($permit);
-            if(in_array($permit, $selectedPermissions) && !$permission instanceof Permission){
-                Yii::$app->authManager->addChild($role, $permission);
-            }
-            elseif($permission instanceof Permission){
+            if(in_array($permit, $selectedPermissions)) {
+                if (!Yii::$app->authManager->hasChild($role, $permission)){
+                    Yii::$app->authManager->addChild($role, $permission);
+                }
+            } elseif(Yii::$app->authManager->hasChild($role, $permission)){
                 Yii::$app->authManager->removeChild($role, $permission);
             }
         }
