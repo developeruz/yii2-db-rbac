@@ -1,15 +1,21 @@
-Динамическая настройка прав доступа для Yii2
-============
+Dynamic Access Control for Yii2
+============================================
 
-Модуль для создания ролей и прав доступа через веб-интерфейс, так же имеющий веб интерфейс для назначения ролей пользователям
-Поведение для приложения, проверяющее право доступа к action по внесенным в модуле правилам.
+##### НА РУССКОМ [ТУТ](https://github.com/developeruz/yii2-db-rbac/blob/master/README.RU.md)
 
-###Установка:###
+The easiest way to create access control in Yii2 without changes in the code.
+
+This module allows creating roles and rules for Yii role base access (RBAC) via UI.
+It also allows assigning roles and rules for user via UI.
+Behaviour that checks access by the modules rules.
+
+### Installation guide
 ```bash
 $ php composer.phar require developeruz/yii2-db-rbac "*"
 ```
 
-Для корректной работы модуля необходимо настроить authManager в конфиге приложения (common/config/main.php для advanced или config/web.php и config/console  для basic приложения)
+To work correctly, you must configure the module `authManager` in the application config file (`common/config/main.php` for advanced app 
+or `config/web.php` and `config/console` for basic app)
 ```php
     'components' => [
        'authManager' => [
@@ -19,13 +25,13 @@ $ php composer.phar require developeruz/yii2-db-rbac "*"
     ]
 ```
 
-И выполнить миграции, создающие таблицы для DbManager (подразумевается, что коннект к БД для приложения уже настроен)
+Run migration to create `DbManager` table (it means that a connection to the database is already configured for the application)
 ```bash
 $ yii migrate --migrationPath=@yii/rbac/migrations/
 ```
 
-##Подключение модуля##
-В конфиге приложения (backend/config/main.php для advanced или config/web.php для basic приложения) прописываем модуль
+## Add the module
+Include module to the config file (`backend/config/main.php` for advanced app or `config/web.php` for basic app)
 ```php
   'modules' => [
         'permit' => [
@@ -33,7 +39,8 @@ $ yii migrate --migrationPath=@yii/rbac/migrations/
         ],
     ],
 ```
-Если нужно передать layout это можно сделать так:
+
+If you want to setup layout, put it in the following way
 ```php
   'modules' => [
         'permit' => [
@@ -43,22 +50,23 @@ $ yii migrate --migrationPath=@yii/rbac/migrations/
     ],
 ```
 
-Если вы используете ЧПУ, то убедитесь что у вас прописаны правила роутинга для модулей
+If you use CNC, be sure that you have correct routing rules for modules
 ```php
 '<module:\w+>/<controller:\w+>/<action:(\w|-)+>' => '<module>/<controller>/<action>',
 '<module:\w+>/<controller:\w+>/<action:(\w|-)+>/<id:\d+>' => '<module>/<controller>/<action>',
 ```
 
-**Добавляем ссылки в меню**
+**Adding links**
 
-**/permit/access/role - управление ролями**
+**/permit/access/role - manage roles**
 
-**/permit/access/permission - управление правами доступа**
+**/permit/access/permission - manage access**
 
-###Назначение ролей пользователям###
-По многочисленным просьбам в модуль добавлен интерфейс для назначения ролей пользователям. 
+### Assigning role to a user
 
-Для корректной работы модуля нужно указать в параметрах модуля класс `User`.
+The module also has an interface for assigning roles to users.
+
+To work correctly, the module should be specified with `User` class in the module parameters.
 ```php
 'modules' => [
         'permit' => [
@@ -70,8 +78,9 @@ $ yii migrate --migrationPath=@yii/rbac/migrations/
     ],
 ```
 
-Класс User должен реализовывать интерфейс `developeruz\db_rbac\interfaces\UserRbacInterface`. 
-В большинстве случаев придется дописать в нем 1 функцию `getUserName()` которая будет возвращать отображаемое имя пользователя.
+User class should implement `developeruz\db_rbac\interfaces\UserRbacInterface`.
+In most cases, you have to add function `getUserName()` which should return user's name.
+
 ```php
 use developeruz\db_rbac\interfaces\UserRbacInterface;
 
@@ -85,8 +94,9 @@ class User extends ActiveRecord implements IdentityInterface, UserRbacInterface
 }
 ```
 
-**Управление ролью пользователя происходит на странице `/permit/user/view/1` для пользователя с id=1.**
-Удобнее всего дописать кнопку на эту страницу в Grid со списком пользователей.
+**For managing role for user with id=1, visit `/permit/user/view/1`**
+
+The easiest way is to add this as a button in `GridView` with users list.
 ```php
 echo GridView::widget([
     'dataProvider' => $dataProvider,
@@ -111,25 +121,27 @@ echo GridView::widget([
 ]);
 ```
 
-Присвоить роль пользователю можно и в коде, например при создании нового пользователя. 
+You can also assign a role to the user in the code, for example when user has been created. 
 ```php
 $userRole = Yii::$app->authManager->getRole('name_of_role');
 Yii::$app->authManager->assign($userRole, $user->getId());
 ```
 
-Проверить, имеет ли пользователь право на действие можно через метод `can()` компонента User
+You also can check if a user has access in code thought `can()` method in User class
 ```php
 Yii::$app->user->can($permissionName);
 ```
-$permissionName - может быть как ролью так и правом
+$permissionName - could be a role name or a permission name.
 
-##Поведение, динамически проверяющее наличие прав##
+## Behaviour that checks access by the modules rules
 
-Данное поведение позволяет не писать Yii::$app->user->can($permissionName); в каждом action, а проверять права доступа на лету.
-Это удобно для гибкой настройки прав при использовании сторонних модулей.
+By using this behaviour you don't need to write `Yii::$app->user->can($permissionName)` in each action. Behaviour will check it automatically.
+It is also useful for access control with the third party modules.
 
-###Подключение поведения###
-В конфиге того приложения, доступ к которому следует проверять на лету, необходимо подключить поведение
+### Configure behaviour
+
+You have to include behaviour to the app config file, if you want to check access automatically.
+
 ```php
 use developeruz\db_rbac\behaviors\AccessBehavior;
 
@@ -137,16 +149,17 @@ use developeruz\db_rbac\behaviors\AccessBehavior;
         'class' => AccessBehavior::className(),
  ]
 ```
-С этого момента, после обработки запроса (событие EVENT_BEFORE_ACTION) проверяются права текущего пользователя (Yii::$app->user) на выполнение запрашиваемого действия (Yii::$app->user->can())
-Действие считается разрешенным, если:
- - пользователю разрешен доступ к конкретному action (правило записано как: module/controller/action)
- - пользователю разрешен доступ к любым action данного контроллера (правило записано как: module/controller)
- - пользователю разрешен доступ к любым action данного модуля (правило записано как: module)
 
-### Настройка редиректа при отсутствии доступа###
-По умолчанию, при отсутствии у пользователя доступа, поведение бросает **ForbiddenHttpException**, который может обрабатываться приложением так как ему нужно.
+On `EVENT_BEFORE_ACTION` behaviour will check access for current user (`Yii::$app->user`) to the action.
+Action is allowed if:
+ - a user has access to the action (rule: module/controller/action)
+ - a user has acceess to any action in the controller (rule: module/controller)
+ - a user has access to any action in the module (rule: module)
 
-Так-же можно настроить **login_url** для редиректа не авторизованного пользователя, в случаи отсутствия у него прав доступа к данной странице и **redirect_url** для перенаправления вне зависимости от авторизованности пользователя
+### Redirection if access denied
+By default if a user doesn't have access, behaviour will throw `ForbiddenHttpException`. Application can handle this exception as needed.
+
+You also can configure `login_url` where unauthorized user will be redirected, or `redirect_url` for redirecting a user when access is denied.
 ```php
     'as AccessBehavior' => [
         'class' => AccessBehavior::className(),
@@ -155,9 +168,10 @@ use developeruz\db_rbac\behaviors\AccessBehavior;
     ]
 ```
 
-###Настройка прав доступа по умолчанию###
-После подключения поведения, доступ становится возможен только авторизованному пользователю, имеющему некие права.
-Для исключений из этого правила можно прописать доступы по умолчанию в том же формате AccessControl, что и в контроллере:
+### Configure default access rules
+
+After connecting behavior, access is available only to authorized users with certain rights.
+You can create default access rights in config file in the same way as you do in controller (`AccessControl`):
 ```php
     'as AccessBehavior' => [
         'class' => AccessBehavior::className(),
@@ -177,5 +191,6 @@ use developeruz\db_rbac\behaviors\AccessBehavior;
             ]
     ]
 ```
-В приведенном выше примере разрешен доступ любому пользователю к site/login и site/index и доступ пользователя с ролью admin к site/about
-Правила прописанные в конфиге имеют приоритет над динамически настраиваемыми правилами.
+
+In this example any user has access to `site/login` and `site/index` and only user with role `admin` has access to `site/about`.
+The rules described in the configuration take precedence over dynamically configurable rules.

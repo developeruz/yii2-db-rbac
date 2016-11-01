@@ -11,7 +11,7 @@ use yii\widgets\ActiveForm;
 
 $this->title = Yii::t('db_rbac', 'Новая роль');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('db_rbac', 'Управление ролями'), 'url' => ['role']];
-$this->params['breadcrumbs'][] = 'Новая роль';
+$this->params['breadcrumbs'][] = Yii::t('db_rbac', 'Новая роль');
 ?>
 <div class="news-index">
 

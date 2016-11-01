@@ -29,11 +29,13 @@ class Yii2DbRbac extends \yii\base\Module
 
     public function registerTranslations()
     {
-        Yii::$app->i18n->translations['db_rbac'] = [
-            'class' => 'yii\i18n\PhpMessageSource',
-            'sourceLanguage' => 'ru-Ru',
-            'basePath' => '@developeruz/db_rbac/messages',
-        ];
+        if (!isset(Yii::$app->i18n->translations['db_rbac'])) {
+            Yii::$app->i18n->translations['db_rbac'] = [
+                'class' => 'yii\i18n\PhpMessageSource',
+                'sourceLanguage' => 'ru-Ru',
+                'basePath' => '@developeruz/db_rbac/messages',
+            ];
+        }
     }
 
     public static function t($category, $message, $params = [], $language = null)
