@@ -1,4 +1,5 @@
 <?php
+
 namespace developeruz\db_rbac\views\access;
 
 use Yii;
@@ -9,7 +10,7 @@ use yii\widgets\ActiveForm;
 /* @var $model common\models\Links */
 /* @var $form yii\widgets\ActiveForm */
 
-$this->title = Yii::t('db_rbac', 'Редактирование правила: ') . ' ' . $permit->description;
+$this->title = Yii::t('db_rbac', 'Редактирование правила') . ': ' . $permit->description;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('db_rbac', 'Правила доступа'), 'url' => ['permission']];
 $this->params['breadcrumbs'][] = Yii::t('db_rbac', 'Редактирование правила');
 ?>
@@ -19,17 +20,11 @@ $this->params['breadcrumbs'][] = Yii::t('db_rbac', 'Редактирование
 
     <div class="links-form">
 
-        <?php
-        if (!empty($error)) {
-            ?>
+        <?php if (!empty($error)) { ?>
             <div class="error-summary">
-                <?php
-                echo implode('<br>', $error);
-                ?>
+                <?= implode('<br>', $error); ?>
             </div>
-        <?php
-        }
-        ?>
+        <?php } ?>
 
         <?php $form = ActiveForm::begin(); ?>
 
@@ -50,4 +45,5 @@ $this->params['breadcrumbs'][] = Yii::t('db_rbac', 'Редактирование
         <?php ActiveForm::end(); ?>
 
     </div>
+
 </div>

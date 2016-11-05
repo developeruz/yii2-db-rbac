@@ -1,4 +1,5 @@
 <?php
+
 namespace developeruz\db_rbac\views\user;
 
 use Yii;
@@ -16,4 +17,3 @@ use yii\widgets\ActiveForm;
 </div>
 
 <?php ActiveForm::end(); ?>
-

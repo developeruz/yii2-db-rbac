@@ -1,4 +1,5 @@
 <?php
+
 /**
  * AccessController for Yii2
  *
@@ -7,16 +8,17 @@
  * @package AccessController for Yii2
  *
  */
+
 namespace developeruz\db_rbac\controllers;
 
 use Yii;
-use yii\web\Controller;
-use yii\web\BadRequestHttpException;
-use yii\rbac\Role;
-use yii\rbac\Permission;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
+use yii\rbac\Permission;
+use yii\rbac\Role;
 use yii\validators\RegularExpressionValidator;
+use yii\web\BadRequestHttpException;
+use yii\web\Controller;
 
 class AccessController extends Controller
 {
@@ -48,6 +50,7 @@ class AccessController extends Controller
             $role->description = Yii::$app->request->post('description');
             Yii::$app->authManager->add($role);
             $this->setPermissions(Yii::$app->request->post('permissions', []), $role);
+
             return $this->redirect(Url::toRoute([
                 'update-role',
                 'name' => $role->name
@@ -55,6 +58,7 @@ class AccessController extends Controller
         }
 
         $permissions = ArrayHelper::map(Yii::$app->authManager->getPermissions(), 'name', 'description');
+
         return $this->render(
             'addRole',
             [
@@ -89,6 +93,7 @@ class AccessController extends Controller
                 $role = $this->setAttribute($role, Yii::$app->request->post());
                 Yii::$app->authManager->update($name, $role);
                 $this->updatePermissions($permissions, Yii::$app->request->post('permissions', []), $role);
+
                 return $this->redirect(Url::toRoute([
                     'update-role',
                     'name' => $role->name
@@ -116,6 +121,7 @@ class AccessController extends Controller
             Yii::$app->authManager->removeChildren($role);
             Yii::$app->authManager->remove($role);
         }
+
         return $this->redirect(Url::toRoute(['role']));
     }
 
@@ -135,6 +141,7 @@ class AccessController extends Controller
             $permit = Yii::$app->authManager->createPermission($permission);
             $permit->description = Yii::$app->request->post('description', '');
             Yii::$app->authManager->add($permit);
+
             return $this->redirect(Url::toRoute([
                 'update-permission',
                 'name' => $permit->name
@@ -151,8 +158,7 @@ class AccessController extends Controller
             $permission = $this->clear(Yii::$app->request->post('name'));
             if ($permission && $this->validate($permission, $this->pattern4Permission)
             ) {
-                if($permission!= $name && !$this->isUnique($permission))
-                {
+                if ($permission!= $name && !$this->isUnique($permission)) {
                     return $this->render('updatePermission', [
                         'permit' => $permit,
                         'error' => $this->error
@@ -162,6 +168,7 @@ class AccessController extends Controller
                 $permit->name = $permission;
                 $permit->description = Yii::$app->request->post('description', '');
                 Yii::$app->authManager->update($name, $permit);
+
                 return $this->redirect(Url::toRoute([
                     'update-permission',
                     'name' => $permit->name
@@ -172,14 +179,18 @@ class AccessController extends Controller
                 'permit' => $permit,
                 'error' => $this->error
             ]);
-        } else throw new BadRequestHttpException(Yii::t('db_rbac', 'Страница не найдена'));
+        } else {
+            throw new BadRequestHttpException(Yii::t('db_rbac', 'Страница не найдена'));
+        }
     }
 
     public function actionDeletePermission($name)
     {
         $permit = Yii::$app->authManager->getPermission($name);
-        if ($permit)
+        if ($permit) {
             Yii::$app->authManager->remove($permit);
+        }
+
         return $this->redirect(Url::toRoute(['permission']));
     }
 
@@ -187,6 +198,7 @@ class AccessController extends Controller
     {
         $object->name = $data['name'];
         $object->description = $data['description'];
+
         return $object;
     }
 
@@ -202,11 +214,11 @@ class AccessController extends Controller
     {
         foreach ($allPermissions as $permit => $description) {
             $permission = Yii::$app->authManager->getPermission($permit);
-            if(in_array($permit, $selectedPermissions)) {
-                if (!Yii::$app->authManager->hasChild($role, $permission)){
+            if (in_array($permit, $selectedPermissions)) {
+                if (!Yii::$app->authManager->hasChild($role, $permission)) {
                     Yii::$app->authManager->addChild($role, $permission);
                 }
-            } elseif(Yii::$app->authManager->hasChild($role, $permission)){
+            } elseif (Yii::$app->authManager->hasChild($role, $permission)) {
                 Yii::$app->authManager->removeChild($role, $permission);
             }
         }
@@ -215,10 +227,11 @@ class AccessController extends Controller
     protected function validate($field, $regex)
     {
         $validator = new RegularExpressionValidator(['pattern' => $regex]);
-        if ($validator->validate($field, $error))
+        if ($validator->validate($field, $error)) {
             return true;
-        else {
-            $this->error[] = Yii::t('db_rbac', 'Значение "{field}" содержит не допустимые символы', ['field' => $field]);
+        } else {
+            $this->error[] = Yii::t('db_rbac', 'Значение "{field}" содержит недопустимые символы', ['field' => $field]);
+
             return false;
         }
     }
@@ -227,14 +240,17 @@ class AccessController extends Controller
     {
         $role = Yii::$app->authManager->getRole($name);
         $permission = Yii::$app->authManager->getPermission($name);
-        if ($permission instanceof Permission){
-            $this->error[] = Yii::t('db_rbac', 'Разрешение с таким именем уже существует') .':'. $name;
+        if ($permission instanceof Permission) {
+            $this->error[] = Yii::t('db_rbac', 'Разрешение с таким именем уже существует') . ':' . $name;
+
             return false;
         }
         if ($role instanceof Role) {
-            $this->error[] = Yii::t('db_rbac', 'Роль с таким именем уже существует') .':'. $name;
+            $this->error[] = Yii::t('db_rbac', 'Роль с таким именем уже существует') . ':' . $name;
+
             return false;
         }
+
         return true;
     }
 

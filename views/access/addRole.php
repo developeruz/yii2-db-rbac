@@ -1,4 +1,5 @@
 <?php
+
 namespace developeruz\db_rbac\views\access;
 
 use Yii;
@@ -18,23 +19,19 @@ $this->params['breadcrumbs'][] = Yii::t('db_rbac', 'Новая роль');
     <h1><?= Html::encode($this->title) ?></h1>
 
     <div class="links-form">
-        <?php
-        if (!empty($error)) {
-            ?>
+
+        <?php if (!empty($error)) { ?>
             <div class="error-summary">
-                <?php
-                echo implode('<br>', $error);
-                ?>
+                <?= implode('<br>', $error); ?>
             </div>
-        <?php
-        }
-        ?>
+        <?php } ?>
+
         <?php $form = ActiveForm::begin(); ?>
 
         <div class="form-group">
             <?= Html::label(Yii::t('db_rbac', 'Название роли')); ?>
             <?= Html::textInput('name'); ?>
-            * только латинские буквы, цифры и _ -
+            <?= Yii::t('db_rbac', '<b style="color: #ff0000">*</b> только латинские буквы, цифры и _ -'); ?>
         </div>
 
         <div class="form-group">
@@ -54,4 +51,5 @@ $this->params['breadcrumbs'][] = Yii::t('db_rbac', 'Новая роль');
         <?php ActiveForm::end(); ?>
 
     </div>
+
 </div>
