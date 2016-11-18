@@ -7,7 +7,15 @@ use yii\widgets\ActiveForm;
 
 ?>
 <h3><?=Yii::t('db_rbac', 'Управление ролями пользователя');?> <?= $user->getUserName(); ?></h3>
-<?php $form = ActiveForm::begin(['action' => ["update", 'id' => $user->getId()]]); ?>
+<?php 
+
+foreach ($roles as $name => &$desc){
+    if(!$desc){
+        $desc = $name;
+    }
+}
+
+$form = ActiveForm::begin(['action' => ["update", 'id' => $user->getId()]]); ?>
 
 <?= Html::checkboxList('roles', $user_permit, $roles, ['separator' => '<br>']); ?>
 
