@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Yii2DbRbac for Yii2
  *
@@ -7,6 +8,7 @@
  * @package Yii2DbRbac for Yii2
  *
  */
+
 namespace developeruz\db_rbac;
 
 use Yii;
@@ -22,7 +24,7 @@ class Yii2DbRbac extends \yii\base\Module
         parent::init();
         $this->registerTranslations();
 
-        if($this->theme){
+        if ($this->theme) {
             Yii::$app->view->theme = new \yii\base\Theme($this->theme);
         }
     }
@@ -32,7 +34,7 @@ class Yii2DbRbac extends \yii\base\Module
         if (!isset(Yii::$app->i18n->translations['db_rbac'])) {
             Yii::$app->i18n->translations['db_rbac'] = [
                 'class' => 'yii\i18n\PhpMessageSource',
-                'sourceLanguage' => 'ru-Ru',
+                'sourceLanguage' => 'ru-RU',
                 'basePath' => '@developeruz/db_rbac/messages',
             ];
         }

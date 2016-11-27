@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Controller to attache role for user for Yii2
  *
@@ -7,16 +8,17 @@
  * @package UserController for Yii2
  *
  */
+
 namespace developeruz\db_rbac\controllers;
 
 use Yii;
 use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
-use yii\web\Controller;
 use yii\web\BadRequestHttpException;
-use developeruz\db_rbac\interfaces\UserRbacInterface;
+use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use developeruz\db_rbac\interfaces\UserRbacInterface;
 
 class UserController extends Controller
 {
@@ -24,14 +26,13 @@ class UserController extends Controller
 
     public function beforeAction($action)
     {
-        if(empty(Yii::$app->controller->module->params['userClass'])){
-            throw new BadRequestHttpException(Yii::t('db_rbac','Необходимо указать класс User в настройках модуля'));
+        if (empty(Yii::$app->controller->module->params['userClass'])) {
+            throw new BadRequestHttpException(Yii::t('db_rbac', 'Необходимо указать класс User в настройках модуля'));
         }
 
         $user = new Yii::$app->controller->module->params['userClass']();
 
-        if(! $user instanceof UserRbacInterface)
-        {
+        if (! $user instanceof UserRbacInterface) {
             throw new BadRequestHttpException(Yii::t('db_rbac', 'UserClass должен реализовывать интерфейс developeruz\db_rbac\UserRbacInterface'));
         }
 
@@ -65,6 +66,7 @@ class UserController extends Controller
         $roles = ArrayHelper::map(Yii::$app->authManager->getRoles(), 'name', 'description');
         $user_permit = array_keys(Yii::$app->authManager->getRolesByUser($id));
         $user = $this->findUser($id);
+
         return $this->render('view', [
             'user' => $user,
             'roles' => $roles,
@@ -77,13 +79,13 @@ class UserController extends Controller
     {
         $user = $this->findUser($id);
         Yii::$app->authManager->revokeAll($user->getId());
-        if(Yii::$app->request->post('roles')){
-            foreach(Yii::$app->request->post('roles') as $role)
-            {
+        if (Yii::$app->request->post('roles')) {
+            foreach (Yii::$app->request->post('roles') as $role) {
                 $new_role = Yii::$app->authManager->getRole($role);
                 Yii::$app->authManager->assign($new_role, $user->getId());
             }
         }
+
         return $this->redirect(Url::to(["/".Yii::$app->controller->module->id."/user/view", 'id' => $user->getId()]));
     }
 
@@ -91,7 +93,7 @@ class UserController extends Controller
     {
         $class = new Yii::$app->controller->module->params['userClass']();
         $user = $class::findIdentity($id);
-        if(empty($user)){
+        if (empty($user)) {
             throw new NotFoundHttpException(Yii::t('db_rbac', 'Пользователь не найден'));
         } else {
             return $user;

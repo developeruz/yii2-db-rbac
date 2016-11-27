@@ -1,4 +1,5 @@
 <?php
+
 namespace developeruz\db_rbac\views\access;
 
 use Yii;
@@ -8,6 +9,7 @@ use yii\widgets\ActiveForm;
 /* @var $this yii\web\View */
 /* @var $model common\models\Links */
 /* @var $form yii\widgets\ActiveForm */
+
 $this->title = Yii::t('db_rbac', 'Новое правило');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('db_rbac', 'Правила доступа'), 'url' => ['permission']];
 $this->params['breadcrumbs'][] = Yii::t('db_rbac', 'Новое правило');
@@ -17,17 +19,12 @@ $this->params['breadcrumbs'][] = Yii::t('db_rbac', 'Новое правило');
     <h1><?= Html::encode($this->title) ?></h1>
 
     <div class="links-form">
-        <?php
-        if (!empty($error)) {
-            ?>
+
+        <?php if (!empty($error)) { ?>
             <div class="error-summary">
-                <?php
-                echo implode('<br>', $error);
-                ?>
+                <?= implode('<br>', $error); ?>
             </div>
-        <?php
-        }
-        ?>
+        <?php } ?>
 
         <?php $form = ActiveForm::begin(); ?>
 
@@ -39,7 +36,7 @@ $this->params['breadcrumbs'][] = Yii::t('db_rbac', 'Новое правило');
         <div class="form-group">
             <?= Html::label(Yii::t('db_rbac', 'Разрешенный доступ')); ?>
             <?= Html::textInput('name'); ?>
-            <?=Yii::t('db_rbac', '* Формат module/controller/action<br>site/article - доступ к странице site/article<br>site - доступ к любым action контроллера site');?>
+            <?=Yii::t('db_rbac', '<b style="color: #ff0000">*</b> формат module/controller/action<br>site/article - доступ к странице site/article<br>site - доступ к любым action контроллера site'); ?>
         </div>
 
         <div class="form-group">
@@ -49,4 +46,5 @@ $this->params['breadcrumbs'][] = Yii::t('db_rbac', 'Новое правило');
         <?php ActiveForm::end(); ?>
 
     </div>
+
 </div>
