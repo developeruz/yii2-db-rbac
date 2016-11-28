@@ -34,7 +34,7 @@ $this->params['breadcrumbs'][] = Yii::t('db_rbac', 'Новая роль');
         <div class="form-group">
             <?= Html::label(Yii::t('db_rbac', 'Название роли')); ?>
             <?= Html::textInput('name'); ?>
-            * только латинские буквы, цифры и _ -
+            <?= Yii::t('db_rbac', '* только латинские буквы, цифры и _ -'); ?>
         </div>
 
         <div class="form-group">
