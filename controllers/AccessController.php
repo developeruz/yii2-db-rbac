@@ -218,7 +218,7 @@ class AccessController extends Controller
         if ($validator->validate($field, $error))
             return true;
         else {
-            $this->error[] = Yii::t('db_rbac', 'Значение "{field}" содержит не допустимые символы', ['field' => $field]);
+            $this->error[] = Yii::t('db_rbac', 'Значение "{field}" содержит недопустимые символы', ['field' => $field]);
             return false;
         }
     }
