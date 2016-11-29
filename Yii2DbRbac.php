@@ -16,10 +16,21 @@ class Yii2DbRbac extends \yii\base\Module
     public $controllerNamespace = 'developeruz\db_rbac\controllers';
     public $userClass;
     public $theme = false;
+    public $accessRoles = ['@','?'];
 
     public function init()
     {
         parent::init();
+        
+        if(!empty($this->params['userClass']))
+        {
+            $this->userClass = $this->params['userClass'];
+        }
+        if(!empty($this->params['accessRoles']))
+        {
+            $this->accessRoles = $this->params['accessRoles'];
+        }
+        
         $this->registerTranslations();
 
         if($this->theme){
