@@ -57,6 +57,15 @@ class UserController extends Controller
                     '*' => ['get'],
                 ],
             ],
+            'access' => [
+                'class' => \yii\filters\AccessControl::className(),
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => Yii::$app->controller->module->accessRoles,
+                    ],
+                ],
+            ],
         ];
     }
 
