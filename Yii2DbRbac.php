@@ -23,7 +23,7 @@ class Yii2DbRbac extends \yii\base\Module
         parent::init();
         $this->registerTranslations();
 
-        if($this->theme){
+        if ($this->theme) {
             Yii::$app->view->theme = new \yii\base\Theme($this->theme);
         }
     }
