@@ -3,7 +3,7 @@
  * Yii2DbRbac for Yii2
  *
  * @author Elle <elleuz@gmail.com>
- * @version 0.1
+ * @version 1.1
  * @package Yii2DbRbac for Yii2
  *
  */
@@ -14,8 +14,9 @@ use Yii;
 class Yii2DbRbac extends \yii\base\Module
 {
     public $controllerNamespace = 'developeruz\db_rbac\controllers';
-    public $userClass;
     public $theme = false;
+    public $userClass;
+    public $accessRoles;
 
     public function init()
     {

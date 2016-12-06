@@ -30,7 +30,9 @@ Run migration to create `DbManager` table (it means that a connection to the dat
 $ yii migrate --migrationPath=@yii/rbac/migrations/
 ```
 
-## Add the module
+Add the module
+==============
+
 Include module to the config file (`backend/config/main.php` for advanced app or `config/web.php` for basic app)
 ```php
   'modules' => [
@@ -133,7 +135,23 @@ Yii::$app->user->can($permissionName);
 ```
 $permissionName - could be a role name or a permission name.
 
-## Behaviour that checks access by the modules rules
+### Configure module's Access Control ###
+
+In the config you can set the list of roles that have access to module functionality.
+```php
+'modules' => [
+        'permit' => [
+            'class' => 'app\modules\db_rbac\Yii2DbRbac',
+            'params' => [
+                'userClass' => 'app\models\User',
+                'accessRoles' => ['admin']
+            ]
+        ],
+    ],
+```
+
+Behaviour that checks access by the modules rules
+=================================================
 
 By using this behaviour you don't need to write `Yii::$app->user->can($permissionName)` in each action. Behaviour will check it automatically.
 It is also useful for access control with the third party modules.
@@ -194,3 +212,14 @@ You can create default access rights in config file in the same way as you do in
 
 In this example any user has access to `site/login` and `site/index` and only user with role `admin` has access to `site/about`.
 The rules described in the configuration take precedence over dynamically configurable rules.
+
+Contributing
+============
+
+Contributions are **welcome** and will be fully **credited**.
+I accept contributions via Pull Requests. Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
+
+License
+=======
+
+The MIT License (MIT). Please see [License File](LICENSE.md) for more information.

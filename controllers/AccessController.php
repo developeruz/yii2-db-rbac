@@ -24,6 +24,23 @@ class AccessController extends Controller
     protected $pattern4Role = '/^[a-zA-Z0-9_-]+$/';
     protected $pattern4Permission = '/^[a-zA-Z0-9_\/-]+$/';
 
+    public function behaviors()
+    {
+        if(!empty(Yii::$app->controller->module->params['accessRoles'])) {
+            return [
+                'access' => [
+                    'class' => \yii\filters\AccessControl::className(),
+                    'rules' => [
+                        [
+                            'allow' => true,
+                            'roles' => Yii::$app->controller->module->params['accessRoles'],
+                        ],
+                    ],
+                ],
+            ];
+        }
+    }
+
     public function actions()
     {
         return [

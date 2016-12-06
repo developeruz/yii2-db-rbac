@@ -49,15 +49,29 @@ class UserController extends Controller
 
     public function behaviors()
     {
-        return [
+        $behavior = [
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'update' => ['post'],
                     '*' => ['get'],
                 ],
-            ],
-        ];
+            ]
+          ];
+
+        if(!empty(Yii::$app->controller->module->params['accessRoles'])) {
+            $behavior['access'] = [
+                'class' => \yii\filters\AccessControl::className(),
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => Yii::$app->controller->module->params['accessRoles'],
+                    ],
+                ],
+            ];
+        }
+
+        return $behavior;
     }
 
     public function actionView($id)
