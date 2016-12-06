@@ -18,9 +18,10 @@ use yii\web\User;
 use yii\filters\AccessControl;
 use yii\web\ForbiddenHttpException;
 
-class AccessBehavior extends AttributeBehavior {
+class AccessBehavior extends AttributeBehavior
+{
 
-    public $rules=[];
+    public $rules = [];
     public $redirect_url = false;
     public $login_url = false;
 
@@ -35,7 +36,7 @@ class AccessBehavior extends AttributeBehavior {
 
     public function interception($event)
     {
-        if(!isset( Yii::$app->i18n->translations['db_rbac'])){
+        if (!isset(Yii::$app->i18n->translations['db_rbac'])) {
             Yii::$app->i18n->translations['db_rbac'] = [
                 'class' => 'yii\i18n\PhpMessageSource',
                 'sourceLanguage' => 'ru-Ru',
@@ -51,20 +52,19 @@ class AccessBehavior extends AttributeBehavior {
         $request = Yii::$app->getRequest();
         $action = $event->action;
 
-        if(!$this->cheсkByRule($action, $user, $request))
-        {
+        if (!$this->cheсkByRule($action, $user, $request)) {
             //И по AuthManager
-            if(!$this->checkPermission($route)){
+            if (!$this->checkPermission($route)) {
                 //Если задан $login_url и пользователь не авторизован
-                if(Yii::$app->user->isGuest && $this->login_url){
+                if (Yii::$app->user->isGuest && $this->login_url) {
                     Yii::$app->response->redirect($this->login_url)->send();
                     exit();
                 }
                 //Если задан $redirect_url
-                if($this->redirect_url){
+                if ($this->redirect_url) {
                     Yii::$app->response->redirect($this->redirect_url)->send();
                     exit();
-                }else {
+                } else {
                     throw new ForbiddenHttpException(Yii::t('db_rbac', 'Недостаточно прав'));
                 }
             }
@@ -73,8 +73,7 @@ class AccessBehavior extends AttributeBehavior {
 
     protected function createRule()
     {
-        foreach($this->rules as $controller => $rule)
-        {
+        foreach ($this->rules as $controller => $rule) {
             foreach ($rule as $singleRule) {
                 if (is_array($singleRule)) {
                     $option = [
@@ -90,8 +89,9 @@ class AccessBehavior extends AttributeBehavior {
     protected function cheсkByRule($action, $user, $request)
     {
         foreach ($this->_rules as $rule) {
-            if ($rule->allows($action, $user, $request))
+            if ($rule->allows($action, $user, $request)) {
                 return true;
+            }
         }
         return false;
     }
@@ -102,14 +102,15 @@ class AccessBehavior extends AttributeBehavior {
 
         $routePathTmp = explode('/', $route[0]);
         $routeVariant = array_shift($routePathTmp);
-        if(Yii::$app->user->can($routeVariant, $route[1]))
+        if (Yii::$app->user->can($routeVariant, $route[1])) {
             return true;
+        }
 
-        foreach($routePathTmp as $routePart)
-        {
-            $routeVariant .= '/'.$routePart;
-            if(Yii::$app->user->can($routeVariant, $route[1]))
+        foreach ($routePathTmp as $routePart) {
+            $routeVariant .= '/' . $routePart;
+            if (Yii::$app->user->can($routeVariant, $route[1])) {
                 return true;
+            }
         }
 
         return false;
