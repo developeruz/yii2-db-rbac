@@ -38,7 +38,7 @@ class AccessController extends Controller
                     ],
                 ],
             ];
-        }
+        } else return [];
     }
 
     public function actions()

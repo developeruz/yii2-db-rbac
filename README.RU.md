@@ -156,7 +156,7 @@ $permissionName - может быть как ролью так и правом
 use developeruz\db_rbac\behaviors\AccessBehavior;
 
  'as AccessBehavior' => [
-        'class' => AccessBehavior::className(),
+        'class' => \developeruz\db_rbac\behaviors\AccessBehavior::className(),
  ]
 ```
 С этого момента, после обработки запроса (событие EVENT_BEFORE_ACTION) проверяются права текущего пользователя (Yii::$app->user) на выполнение запрашиваемого действия (Yii::$app->user->can())
@@ -171,7 +171,7 @@ use developeruz\db_rbac\behaviors\AccessBehavior;
 Так-же можно настроить **login_url** для редиректа не авторизованного пользователя, в случаи отсутствия у него прав доступа к данной странице и **redirect_url** для перенаправления вне зависимости от авторизованности пользователя
 ```php
     'as AccessBehavior' => [
-        'class' => AccessBehavior::className(),
+        'class' => \developeruz\db_rbac\behaviors\AccessBehavior::className(),
         'redirect_url' => '/forbidden',
         'login_url' => Yii::$app->user->loginUrl
     ]
@@ -182,7 +182,7 @@ use developeruz\db_rbac\behaviors\AccessBehavior;
 Для исключений из этого правила можно прописать доступы по умолчанию в том же формате AccessControl, что и в контроллере:
 ```php
     'as AccessBehavior' => [
-        'class' => AccessBehavior::className(),
+        'class' => \developeruz\db_rbac\behaviors\AccessBehavior::className(),
         'rules' =>
             ['site' =>
                 [

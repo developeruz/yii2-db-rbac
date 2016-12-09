@@ -164,7 +164,7 @@ You have to include behaviour to the app config file, if you want to check acces
 use developeruz\db_rbac\behaviors\AccessBehavior;
 
  'as AccessBehavior' => [
-        'class' => AccessBehavior::className(),
+        'class' => \developeruz\db_rbac\behaviors\AccessBehavior::className(),
  ]
 ```
 
@@ -180,7 +180,7 @@ By default if a user doesn't have access, behaviour will throw `ForbiddenHttpExc
 You also can configure `login_url` where unauthorized user will be redirected, or `redirect_url` for redirecting a user when access is denied.
 ```php
     'as AccessBehavior' => [
-        'class' => AccessBehavior::className(),
+        'class' => \developeruz\db_rbac\behaviors\AccessBehavior::className(),
         'redirect_url' => '/forbidden',
         'login_url' => Yii::$app->user->loginUrl
     ]
@@ -192,7 +192,7 @@ After connecting behavior, access is available only to authorized users with cer
 You can create default access rights in config file in the same way as you do in controller (`AccessControl`):
 ```php
     'as AccessBehavior' => [
-        'class' => AccessBehavior::className(),
+        'class' => \developeruz\db_rbac\behaviors\AccessBehavior::className(),
         'rules' =>
             ['site' =>
                 [
