@@ -9,6 +9,12 @@ This module allows creating roles and rules for Yii role base access (RBAC) via 
 It also allows assigning roles and rules for user via UI.
 Behaviour that checks access by the modules rules.
 
+### Integrations
+CMS  | Module
+------------ | -------------
+EasyiiCMS | https://github.com/developeruz/easyii-rbac-modul
+*Feel free to request integration with any CMS/Packages which is written on Yii2*
+
 ### Installation guide
 ```bash
 $ php composer.phar require developeruz/yii2-db-rbac "*"
