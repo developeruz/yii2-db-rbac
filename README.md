@@ -12,7 +12,7 @@ Behaviour that checks access by the modules rules.
 ### Integrations
 CMS  | Module
 ------------ | -------------
-EasyiiCMS | https://github.com/developeruz/easyii-rbac-modul
+EasyiiCMS | https://github.com/developeruz/easyii-rbac-module
 *Feel free to request integration with any CMS/Packages which is written on Yii2*
 
 ### Installation guide
