@@ -98,7 +98,7 @@ class UserController extends Controller
             }
         }
         return $this->redirect(Url::to([
-            "/" . Yii::$app->controller->module->id . "/user/view",
+            "view",
             'id' => $user->getId()
         ]));
     }
