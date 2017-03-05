@@ -219,6 +219,24 @@ You can create default access rights in config file in the same way as you do in
 In this example any user has access to `site/login` and `site/index` and only user with role `admin` has access to `site/about`.
 The rules described in the configuration take precedence over dynamically configurable rules.
 
+### Configure areas of behavior responsibility
+By default, the rule is "all is prohibited unless is allowed." If the behavior is supposed to protect only certain routes, 
+and all others should be accessible for all, please set up `protect` parameter
+```php
+'as AccessBehavior' => [
+        'class' => \developeruz\db_rbac\behaviors\AccessBehavior::className(),
+        'protect' => ['admin', 'user', 'site/about'],
+        'rules' => [
+            'user' => [['actions' => ['login'], 'allow' => true ],
+                       ['actions' => ['logout'], 'roles' => ['@'], 'allow' => true ]]
+        ]
+    ],
+    
+```
+In this example, the behavior will check the user's permission to access the page only for paths beginning 
+with `admin`,` user` and `site / about`. All other routes are available for all (not verified by the behavior). 
+As you can see in the example, the parameter `protect` can be combined with `rules`.
+
 Contributing
 ============
 

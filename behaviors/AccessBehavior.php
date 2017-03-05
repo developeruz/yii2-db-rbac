@@ -24,6 +24,7 @@ class AccessBehavior extends AttributeBehavior
     public $rules = [];
     public $redirect_url = false;
     public $login_url = false;
+    public $protect = [];
 
     private $_rules = [];
 
@@ -45,6 +46,21 @@ class AccessBehavior extends AttributeBehavior
         }
 
         $route = Yii::$app->getRequest()->resolve();
+
+        //Проверяем нужно ли вообще проверять
+        if (!empty($this->protect)) {
+            $needToBeProtected = false;
+            $routes = $this->createPartRoutes($route);
+            foreach ($routes as $routeVariant) {
+                if (in_array($routeVariant, $this->protect)) {
+                    $needToBeProtected = true;
+                    break;
+                }
+            }
+            if (!$needToBeProtected) {
+                return;
+            }
+        }
 
         //Проверяем права по конфигу
         $this->createRule();
@@ -99,20 +115,28 @@ class AccessBehavior extends AttributeBehavior
     protected function checkPermission($route)
     {
         //$route[0] - is the route, $route[1] - is the associated parameters
-
-        $routePathTmp = explode('/', $route[0]);
-        $routeVariant = array_shift($routePathTmp);
-        if (Yii::$app->user->can($routeVariant, $route[1])) {
-            return true;
-        }
-
-        foreach ($routePathTmp as $routePart) {
-            $routeVariant .= '/' . $routePart;
+        $routes = $this->createPartRoutes($route);
+        foreach ($routes as $routeVariant) {
             if (Yii::$app->user->can($routeVariant, $route[1])) {
                 return true;
             }
         }
-
         return false;
+    }
+
+    protected function createPartRoutes($route)
+    {
+        //$route[0] - is the route, $route[1] - is the associated parameters
+
+        $routePathTmp = explode('/', $route[0]);
+        $result = [];
+        $routeVariant = array_shift($routePathTmp);
+        $result[] = $routeVariant;
+
+        foreach ($routePathTmp as $routePart) {
+            $routeVariant .= '/' . $routePart;
+            $result[] = $routeVariant;
+        }
+        return $result;
     }
 }
