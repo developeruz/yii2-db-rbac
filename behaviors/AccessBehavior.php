@@ -128,7 +128,7 @@ class AccessBehavior extends AttributeBehavior
     {
         //$route[0] - is the route, $route[1] - is the associated parameters
 
-        $routePathTmp = explode('/', $route[0]);
+        $routePathTmp = explode('/', trim($route[0], '/'));
         $result = [];
         $routeVariant = array_shift($routePathTmp);
         $result[] = $routeVariant;
